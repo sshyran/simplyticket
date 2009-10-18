@@ -1,0 +1,11 @@
+#summary One-sentence summary of this page.
+
+= Introduction =
+
+Steps to get ready to work with simply ticket:<BR>
+
+1) put the db into your mysql server....take the .sql file from svn<BR>
+2) download all the source code<BR>
+3) compile, create stub for Controller*Impl and publish them the way you like the most...copy them in the client's directory or put them on a web server accessible from the client<BR>
+
+Now you have a working project on which you can work...gl<BR>

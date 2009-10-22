@@ -35,11 +35,11 @@ public class Addetto extends Persona implements Serializable{
 
   public Addetto(String nome, String cognome, String indirizzo, String telefono, String residenza, String email,int idaddetto,String login,String password, boolean bigliettaio,int idpersona) throws Exception{
     super(idpersona,nome,cognome,indirizzo,telefono,residenza,email,true);
-    if (idaddetto>0 && login!="" && password!="" && idpersona >0) {
-      IDAddetto=idaddetto;
-      Login = login;
-      Password = password;
-      Bigliettaio=bigliettaio;
+    if (idaddetto>0 && !login.equalsIgnoreCase("") && !password.equalsIgnoreCase("") && idpersona >0) {
+      this.IDAddetto=idaddetto;
+      this.Login = login;
+      this.Password = password;
+      this.Bigliettaio=bigliettaio;
     }
     else
       throw new Exception("Errore nel creare l'account.Controllare che esistano i dati dell'addetto");
@@ -69,8 +69,8 @@ public class Addetto extends Persona implements Serializable{
    * */
 
   public void setLogin(String login) throws Exception{
-    if (login!="")
-      Login=login;
+    if (!login.equalsIgnoreCase(""))
+      this.Login=login;
     else
       throw new Exception("Campo Login vuota");
   }
@@ -91,8 +91,8 @@ public class Addetto extends Persona implements Serializable{
    * * */
 
   public void setPassword(String password) throws Exception{
-    if (password!="")
-      Password=password;
+    if (!password.equalsIgnoreCase(""))
+      this.Password=password;
     else
       throw new Exception("Campo Password vuoto");
   }
@@ -110,7 +110,7 @@ public class Addetto extends Persona implements Serializable{
    * */
 
   public void setBigliettaio(boolean bigliettaio) {
-    Bigliettaio=bigliettaio;
+    this.Bigliettaio=bigliettaio;
   }
 
   /**Ritorna l'ID della persona
@@ -130,7 +130,7 @@ public class Addetto extends Persona implements Serializable{
 
   public void setIDPersona(int persona) throws Exception{
     if (persona>0)
-      IDPersona=persona;
+      this.IDPersona=persona;
     else
       throw new Exception("Campo Password vuoto");
   }
@@ -148,7 +148,7 @@ public class Addetto extends Persona implements Serializable{
     int numeroParametri=0;
     int conta=0;
     for (int i=0;i<5;i++) {
-      if(i>0 && i<4 &&array[i]!="") {
+      if(i>0 && i<4 && !array[i].equalsIgnoreCase("")) {
         numeroParametri++;
         if (primoParametro<0)
           primoParametro=i;
@@ -168,7 +168,7 @@ public class Addetto extends Persona implements Serializable{
       query=query+" WHERE "+nomeParametroAddetto(primoParametro)+" = ?";
       conta++;
       for (int i=primoParametro+1;i<5;i++) {
-        if ((i>0 && i<4) && array[i]!="") {
+        if ((i>0 && i<4) && !array[i].equalsIgnoreCase("")) {
           query = query + " AND " + nomeParametroAddetto(i) + " =?";
           conta++;
         }
@@ -184,7 +184,7 @@ public class Addetto extends Persona implements Serializable{
     PreparedStatement preparedQuery=connessione.prepareStatement(query);
     int confrontaConta=1;
     for (int i=primoParametro;i<5 && confrontaConta<=conta;i++) {
-      if (((i>0 && i<4) && array[i]!="") || ((i==0 || i==4) && Integer.parseInt(array[i])>0))
+      if (((i>0 && i<4) && !array[i].equalsIgnoreCase("")) || ((i==0 || i==4) && Integer.parseInt(array[i])>0))
         switch(i) {
           case 0:preparedQuery.setInt(confrontaConta,Integer.parseInt(array[i]));
                  confrontaConta++;
@@ -195,12 +195,12 @@ public class Addetto extends Persona implements Serializable{
           case 2:preparedQuery.setString(confrontaConta,array[i]);
                  confrontaConta++;
                  break;
-          case 3:if (array[i]=="TRUE") {
+          case 3:if (array[i].equalsIgnoreCase("TRUE")) {
                    preparedQuery.setBoolean(confrontaConta, true);
                    confrontaConta++;
                  }
                  else
-                   if (array[i]=="FALSE") {
+                   if (array[i].equalsIgnoreCase("FALSE")) {
                      preparedQuery.setBoolean(confrontaConta, false);
                      confrontaConta++;
                    }
@@ -233,7 +233,7 @@ public class Addetto extends Persona implements Serializable{
    * */
 
   public void storageAddetto() throws SQLException,Exception{
-    this.setConnection();
+    setConnection();
     String array[]=new String[8];
     array[0]=""+super.getID();
     boolean IDEsistente=true;
@@ -275,7 +275,7 @@ public class Addetto extends Persona implements Serializable{
    * */
 
   public void updateAddetto() throws SQLException,Exception{
-    this.setConnection();
+    setConnection();
     super.updatePersona();
     String query="UPDATE Addetto SET Login= ?, Password=?, Bigliettaio=?, IDPersona=? WHERE Addetto.IDAddetto=?;";
     PreparedStatement preparedQuery=connessione.prepareStatement(query);
@@ -293,7 +293,7 @@ public class Addetto extends Persona implements Serializable{
    * */
 
   public void DeleteAddetto() throws SQLException,Exception{
-    this.setConnection();
+    setConnection();
     String query="DELETE FROM Addetto WHERE Addetto.IDAddetto=?;";
     PreparedStatement preparedQuery=connessione.prepareStatement(query);
     preparedQuery.setInt(1,this.getIDAddetto());

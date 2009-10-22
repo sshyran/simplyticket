@@ -17,17 +17,17 @@ import java.io.IOException;
 public class Fila implements Serializable{
   public Fila(int id,String numero,int dimensione,String sala) throws Exception{
     if (id>0 && controllaStringa(numero) && dimensione>0 && controllaStringa(sala)) {
-      ID=id;
-      NumeroFila=numero;
-      DimensioneFila=dimensione;
-      IDSala=sala;
+      this.ID=id;
+      this.NumeroFila=numero;
+      this.DimensioneFila=dimensione;
+      this.IDSala=sala;
     }
     else
       throw new Exception("Dai per la fila non validi");
   }
 
   private static boolean controllaStringa(String daControllare) {
-    if ((daControllare!=null && daControllare!=""))
+    if ((daControllare!=null && !daControllare.equalsIgnoreCase("")))
       return true;
     else
       return false;
@@ -43,7 +43,7 @@ public class Fila implements Serializable{
 
   public void setNumeroFila(String fila) throws Exception{
     if (controllaStringa(fila))
-      NumeroFila=fila;
+      this.NumeroFila=fila;
     else
       throw new Exception("Bisogna specificare una lettera per la fila");
   }
@@ -54,7 +54,7 @@ public class Fila implements Serializable{
 
   public void setDimensioneFila(int dimensione) throws Exception{
     if (dimensione>0)
-      DimensioneFila=dimensione;
+      this.DimensioneFila=dimensione;
     else
       throw new Exception("Bisogna specificare la dimensione per la fila");
   }
@@ -65,7 +65,7 @@ public class Fila implements Serializable{
 
   public void setIDSala(String sala) throws Exception{
     if (controllaStringa(sala))
-      IDSala=sala;
+      this.IDSala=sala;
     else
       throw new Exception("Bisogna specificare la sala d'appartenenza alle fila");
   }
@@ -196,7 +196,7 @@ public class Fila implements Serializable{
   }
 
   public void storageFila() throws SQLException,Exception{
-    this.setConnection();
+    setConnection();
     String query="INSERT INTO Fila(NumeroFila,DimensioneFila,IDSala) values(?,?,?);";
     PreparedStatement preparedQuery=connessione.prepareStatement(query);
     preparedQuery.setString(1,this.getNumeroFila());
@@ -206,7 +206,7 @@ public class Fila implements Serializable{
   }
 
   public void updateFila() throws SQLException,Exception{
-    this.setConnection();
+    setConnection();
     String query="UPDATE Fila SET NumeroFila=?, DimensioneFila=?, IDSala=? WHERE Fila.ID=?;";
     PreparedStatement preparedQuery=connessione.prepareStatement(query);
     preparedQuery.setString(1,this.getNumeroFila());
@@ -217,7 +217,7 @@ public class Fila implements Serializable{
   }
 
   public void DeleteFila() throws SQLException,Exception{
-    this.setConnection();
+    setConnection();
     String query="DELETE FROM Fila WHERE Fila.ID=?;";
     PreparedStatement preparedQuery=connessione.prepareStatement(query);
     preparedQuery.setInt(1,this.getID());

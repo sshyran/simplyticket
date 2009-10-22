@@ -31,14 +31,14 @@ public class Persona implements Serializable{
 
   public Persona(int identificatore, String nome, String cognome, String indirizzo, String telefono, String residenza, String email, boolean dipendente) throws Exception{
     if (identificatore>0 && controllaStringa(nome) && controllaStringa(cognome) && controllaStringa(indirizzo) && controllaStringa(telefono)) {
-      ID=identificatore;
-      Nome=nome;
-      Cognome=cognome;
-      Indirizzo=indirizzo;
-      Telefono=telefono;
-      Residenza=residenza;
-      Email=email;
-      Dipendente=dipendente;
+      this.ID=identificatore;
+      this.Nome=nome;
+      this.Cognome=cognome;
+      this.Indirizzo=indirizzo;
+      this.Telefono=telefono;
+      this.Residenza=residenza;
+      this.Email=email;
+      this.Dipendente=dipendente;
     }
     else
       throw new Exception("Dati per la persona non validi");
@@ -51,7 +51,7 @@ public class Persona implements Serializable{
 
 
   private boolean controllaStringa(String daControllare) {
-    if (daControllare!=null && daControllare!="")
+    if (daControllare!=null && !daControllare.equalsIgnoreCase(""))
       return true;
     else
       return false;
@@ -84,8 +84,8 @@ public class Persona implements Serializable{
 
 
   public void setNome(String nome) throws Exception{
-    if (nome!="")
-      Nome=nome;
+    if (!nome.equalsIgnoreCase(""))
+      this.Nome=nome;
     else
       throw new Exception("Nome non valido");
   }
@@ -108,8 +108,8 @@ public class Persona implements Serializable{
 
 
   public void setCognome(String cognome) throws Exception{
-    if (cognome!="")
-      Cognome=cognome;
+    if (!cognome.equalsIgnoreCase(""))
+      this.Cognome=cognome;
     else
       throw new Exception("Cognome non valido");
   }
@@ -132,8 +132,8 @@ public class Persona implements Serializable{
 
 
   public void setIndirizzo(String indirizzo) throws Exception{
-    if (Indirizzo!="")
-      Indirizzo=indirizzo;
+    if (!indirizzo.equalsIgnoreCase(""))
+      this.Indirizzo=indirizzo;
     else
       throw new Exception("Nome non valido");
   }
@@ -156,8 +156,8 @@ public class Persona implements Serializable{
 
 
   public void setTelefono(String telefono) throws Exception{
-    if (telefono!="")
-      Telefono=telefono;
+    if (!telefono.equalsIgnoreCase(""))
+      this.Telefono=telefono;
     else
       throw new Exception("Numero di telefono non valido");
   }
@@ -180,8 +180,8 @@ public class Persona implements Serializable{
 
 
   public void setResidenza(String residenza) throws Exception{
-    if (residenza!="")
-      Residenza=residenza;
+    if (!residenza.equalsIgnoreCase(""))
+      this.Residenza=residenza;
     else
       throw new Exception("Residenza non valido");
   }
@@ -204,8 +204,8 @@ public class Persona implements Serializable{
 
 
   public void setEmail(String email) throws Exception{
-    if (email!="")
-      Email=email;
+    if (!email.equalsIgnoreCase(""))
+      this.Email=email;
     else
       throw new Exception("Email non valido");
   }
@@ -384,7 +384,7 @@ public class Persona implements Serializable{
    * */
 
   public void DeletePersona() throws SQLException,Exception{
-    this.setConnection();
+    setConnection();
     String query="DELETE FROM Persona WHERE Persona.ID=?;";
     PreparedStatement preparedQuery=connessione.prepareStatement(query);
     preparedQuery.setInt(1,this.getID());

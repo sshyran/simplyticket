@@ -18,21 +18,21 @@ import java.io.IOException;
 public class Film implements Serializable{
   public Film(int id,String titolo,String descrizione,String genere,String regia,String attori,String paese,String locandina) throws Exception{
     if (id>0&&controllaStringa(titolo)&&controllaStringa(descrizione)&&controllaStringa(genere)&&controllaStringa(regia)&&controllaStringa(attori)&&controllaStringa(paese)&&controllaStringa(locandina)) {
-      ID=id;
-      Titolo=titolo;
-      Descrizione=descrizione;
-      Genere=genere;
-      Regia=regia;
-      Attori=attori;
-      Paese=paese;
-      Locandina=locandina;
+      this.ID=id;
+      this.Titolo=titolo;
+      this.Descrizione=descrizione;
+      this.Genere=genere;
+      this.Regia=regia;
+      this.Attori=attori;
+      this.Paese=paese;
+      this.Locandina=locandina;
     }
     else
       throw new Exception("Dati del film non corretti o mancanti");
   }
 
   private static boolean controllaStringa(String daControllare) {
-    if ((daControllare!=null && daControllare!="") || daControllare.endsWith("\n"))
+    if ((daControllare!=null && !daControllare.equalsIgnoreCase("")) || daControllare.endsWith("\n"))
       return true;
     else
       return false;
@@ -178,7 +178,7 @@ public class Film implements Serializable{
   }
 
   public void storageFilm() throws SQLException,Exception{
-    this.setConnection();
+    setConnection();
     String query="INSERT INTO Film(ID,Titolo,Descrizione,Genere,Regia,Attori,Paese,Locandina) values(?,?,?,?,?,?,?,?);";
     PreparedStatement preparedQuery=connessione.prepareStatement(query);
     preparedQuery.setInt(1,this.getID());
@@ -193,7 +193,7 @@ public class Film implements Serializable{
   }
 
   public void updateFilm() throws SQLException,Exception{
-    this.setConnection();
+    setConnection();
     String query="UPDATE Film SET Titolo=?, Descrizione=?, Genere=?, Regia=?, Attori=?, Paese=? Locandina=? WHERE Film.ID=?;";
     PreparedStatement preparedQuery=connessione.prepareStatement(query);
     preparedQuery.setString(1,this.getTitolo());
@@ -208,7 +208,7 @@ public class Film implements Serializable{
   }
 
   public void DeleteFilm() throws SQLException,Exception{
-    this.setConnection();
+    setConnection();
     String query="DELETE FROM Film WHERE Film.ID=?;";
     PreparedStatement preparedQuery=connessione.prepareStatement(query);
     preparedQuery.setInt(1,this.getID());

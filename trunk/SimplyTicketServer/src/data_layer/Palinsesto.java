@@ -31,10 +31,10 @@ public class Palinsesto implements Serializable{
 
   public Palinsesto(String id,GregorianCalendar inizio,GregorianCalendar fine,String sala) throws Exception{
     if (controllaStringa(id) && inizio!=null && fine!=null && controllaStringa(sala)) {
-      ID=id;
-      DataInizioValidita=inizio;
-      DataFineValidita=fine;
-      IDSala=sala;
+      this.ID=id;
+      this.DataInizioValidita=inizio;
+      this.DataFineValidita=fine;
+      this.IDSala=sala;
     }
     else
       throw new Exception("Dati per il palinsesto non validi");
@@ -46,7 +46,7 @@ public class Palinsesto implements Serializable{
     * */
 
   private static boolean controllaStringa(String daControllare) {
-    if ((daControllare!=null && daControllare!="") || daControllare.endsWith("�"))
+    if ((daControllare!=null && !daControllare.equalsIgnoreCase("")) || daControllare.endsWith("�"))
       return true;
     else
       return false;
@@ -79,7 +79,7 @@ public class Palinsesto implements Serializable{
 
   public void setDataInizioValidita(GregorianCalendar inizio) throws Exception{
     if (inizio!=null)
-      DataInizioValidita=inizio;
+      this.DataInizioValidita=inizio;
     else
       throw new Exception("La Data Specificata non � valida");
   }
@@ -103,7 +103,7 @@ public class Palinsesto implements Serializable{
 
   public void setDataFineValidita(GregorianCalendar fine) throws Exception{
     if (fine!=null)
-      DataFineValidita=fine;
+      this.DataFineValidita=fine;
     else
       throw new Exception("La Data di Chiusura Specificata non � valida");
   }
@@ -127,7 +127,7 @@ public class Palinsesto implements Serializable{
 
   public void setIDSala(String sala) throws Exception{
     if (controllaStringa(sala))
-      IDSala=sala;
+      this.IDSala=sala;
     else
       throw new Exception("La Sala Specificata per questo palinsesto non � valida");
   }
@@ -203,9 +203,9 @@ public class Palinsesto implements Serializable{
     if (controllaStringa(id)) {
       preparedQuery.setString(1,id);
       if (inizio!=null) {
-        preparedQuery.setString(2,""+inizio.get(inizio.YEAR)+"-"+inizio.get(inizio.MONTH)+"-"+inizio.get(inizio.DAY_OF_MONTH)+" "+inizio.get(inizio.HOUR_OF_DAY)+":"+inizio.get(inizio.MINUTE));
+        preparedQuery.setString(2,""+inizio.get(GregorianCalendar.YEAR)+"-"+(inizio.get(GregorianCalendar.MONTH)+1)+"-"+inizio.get(GregorianCalendar.DAY_OF_MONTH)+" "+inizio.get(GregorianCalendar.HOUR_OF_DAY)+":"+inizio.get(GregorianCalendar.MINUTE));
         if (fine!=null) {
-          preparedQuery.setString(3,""+fine.get(fine.YEAR)+"-"+fine.get(fine.MONTH)+"-"+fine.get(fine.DAY_OF_MONTH)+" "+fine.get(fine.HOUR_OF_DAY)+":"+fine.get(fine.MINUTE));
+          preparedQuery.setString(3,""+fine.get(GregorianCalendar.YEAR)+"-"+(fine.get(GregorianCalendar.MONTH)+1)+"-"+fine.get(GregorianCalendar.DAY_OF_MONTH)+" "+fine.get(GregorianCalendar.HOUR_OF_DAY)+":"+fine.get(GregorianCalendar.MINUTE));
           if (controllaStringa(sala))
             preparedQuery.setString(4,sala);
         }
@@ -216,7 +216,7 @@ public class Palinsesto implements Serializable{
       }
       else {
         if (fine!=null) {
-          preparedQuery.setString(2,""+fine.get(fine.YEAR)+"-"+fine.get(fine.MONTH)+"-"+fine.get(fine.DAY_OF_MONTH)+" "+fine.get(fine.HOUR_OF_DAY)+":"+fine.get(fine.MINUTE));
+          preparedQuery.setString(2,""+fine.get(GregorianCalendar.YEAR)+"-"+(fine.get(GregorianCalendar.MONTH)+1)+"-"+fine.get(GregorianCalendar.DAY_OF_MONTH)+" "+fine.get(GregorianCalendar.HOUR_OF_DAY)+":"+fine.get(GregorianCalendar.MINUTE));
           if (controllaStringa(sala))
             preparedQuery.setString(3,sala);
         }
@@ -228,9 +228,9 @@ public class Palinsesto implements Serializable{
     }
     else {
       if (inizio!=null) {
-        preparedQuery.setString(1,""+inizio.get(inizio.YEAR)+"-"+inizio.get(inizio.MONTH)+"-"+inizio.get(inizio.DAY_OF_MONTH)+" "+inizio.get(inizio.HOUR_OF_DAY)+":"+inizio.get(inizio.MINUTE));
+        preparedQuery.setString(1,""+inizio.get(GregorianCalendar.YEAR)+"-"+(inizio.get(GregorianCalendar.MONTH)+1)+"-"+inizio.get(GregorianCalendar.DAY_OF_MONTH)+" "+inizio.get(GregorianCalendar.HOUR_OF_DAY)+":"+inizio.get(GregorianCalendar.MINUTE));
         if (fine!=null) {
-          preparedQuery.setString(2,""+fine.get(fine.YEAR)+"-"+fine.get(fine.MONTH)+"-"+fine.get(fine.DAY_OF_MONTH)+" "+fine.get(fine.HOUR_OF_DAY)+":"+fine.get(fine.MINUTE));
+          preparedQuery.setString(2,""+fine.get(GregorianCalendar.YEAR)+"-"+(fine.get(GregorianCalendar.MONTH)+1)+"-"+fine.get(GregorianCalendar.DAY_OF_MONTH)+" "+fine.get(GregorianCalendar.HOUR_OF_DAY)+":"+fine.get(GregorianCalendar.MINUTE));
           if (controllaStringa(sala))
             preparedQuery.setString(3,sala);
         }
@@ -241,7 +241,7 @@ public class Palinsesto implements Serializable{
       }
       else {
         if (fine!=null) {
-          preparedQuery.setString(1,""+fine.get(fine.YEAR)+"-"+fine.get(fine.MONTH)+"-"+fine.get(fine.DAY_OF_MONTH)+" "+fine.get(fine.HOUR_OF_DAY)+":"+fine.get(fine.MINUTE));
+          preparedQuery.setString(1,""+fine.get(GregorianCalendar.YEAR)+"-"+(fine.get(GregorianCalendar.MONTH)+1)+"-"+fine.get(GregorianCalendar.DAY_OF_MONTH)+" "+fine.get(GregorianCalendar.HOUR_OF_DAY)+":"+fine.get(GregorianCalendar.MINUTE));
           if (controllaStringa(sala))
             preparedQuery.setString(2,sala);
         }
@@ -259,7 +259,9 @@ public class Palinsesto implements Serializable{
     while(Risultati.next()) {
       lavoro=Risultati.getString("DataInizioValidita");
       lavoro2=Risultati.getString("DataFineValidita");
-      nuovo=new Palinsesto(Risultati.getString("ID"),new GregorianCalendar(Integer.parseInt(lavoro.substring(0,4)),Integer.parseInt(lavoro.substring(5,7)),Integer.parseInt(lavoro.substring(8,10))),new GregorianCalendar(Integer.parseInt(lavoro2.substring(0,4)),Integer.parseInt(lavoro2.substring(5,7)),Integer.parseInt(lavoro2.substring(8,10))),Risultati.getString("IDSala"));
+      GregorianCalendar dataTemporanea=new GregorianCalendar(Integer.parseInt(lavoro.substring(0,4)),Integer.parseInt(lavoro.substring(5,7)),Integer.parseInt(lavoro.substring(8,10)));
+      GregorianCalendar dataTemporaneaFine=new GregorianCalendar(Integer.parseInt(lavoro2.substring(0,4)),Integer.parseInt(lavoro2.substring(5,7)),Integer.parseInt(lavoro2.substring(8,10)));
+      nuovo=new Palinsesto(Risultati.getString("ID"),dataTemporanea,dataTemporaneaFine,Risultati.getString("IDSala"));
       collezioneDiPalinsesti.add(nuovo);
       }
     Risultati.close();
@@ -274,14 +276,14 @@ public class Palinsesto implements Serializable{
 
 
   public void storagePalinsesto() throws SQLException,Exception{
-    this.setConnection();
+    setConnection();
     String query="INSERT INTO Palinsesto(ID,DataInizioValidita,DataFineValidita,IDSala) values(?,?,?,?);";
     PreparedStatement preparedQuery=connessione.prepareStatement(query);
     GregorianCalendar lavoro=this.getDataInizioValidita();
     GregorianCalendar lavoro2=this.getDataFineValidita();
     preparedQuery.setString(1,this.getID());
-    preparedQuery.setString(2,""+lavoro.get(lavoro.YEAR)+"-"+lavoro.get(lavoro.MONTH)+"-"+lavoro.get(lavoro.DAY_OF_MONTH));
-    preparedQuery.setString(3,""+lavoro2.get(lavoro2.YEAR)+"-"+lavoro2.get(lavoro2.MONTH)+"-"+lavoro2.get(lavoro2.DAY_OF_MONTH));
+    preparedQuery.setString(2,""+lavoro.get(GregorianCalendar.YEAR)+"-"+lavoro.get(GregorianCalendar.MONTH)+"-"+lavoro.get(GregorianCalendar.DAY_OF_MONTH));
+    preparedQuery.setString(3,""+lavoro2.get(GregorianCalendar.YEAR)+"-"+lavoro2.get(GregorianCalendar.MONTH)+"-"+lavoro2.get(GregorianCalendar.DAY_OF_MONTH));
     preparedQuery.setString(4,this.getIDSala());
     preparedQuery.execute();
   }
@@ -293,14 +295,14 @@ public class Palinsesto implements Serializable{
 
 
   public void updatePalinsesto() throws SQLException,Exception{
-    this.setConnection();
+    setConnection();
     String query="UPDATE Palinsesto SET ID=?, DataInizioValidita=?, DataFineValidita=?, IDSala=? WHERE Palinsesto.ID=?;";
     PreparedStatement preparedQuery=connessione.prepareStatement(query);
     GregorianCalendar lavoro=this.getDataInizioValidita();
     GregorianCalendar lavoro2=this.getDataFineValidita();
     preparedQuery.setString(1,this.getID());
-    preparedQuery.setString(2,""+lavoro.get(lavoro.YEAR)+"-"+lavoro.get(lavoro.MONTH)+"-"+lavoro.get(lavoro.DAY_OF_MONTH)+" "+lavoro.get(lavoro.HOUR_OF_DAY)+":"+lavoro.get(lavoro.MINUTE));
-    preparedQuery.setString(3,""+lavoro2.get(lavoro2.YEAR)+"-"+lavoro2.get(lavoro2.MONTH)+"-"+lavoro2.get(lavoro2.DAY_OF_MONTH)+" "+lavoro2.get(lavoro2.HOUR_OF_DAY)+":"+lavoro2.get(lavoro2.MINUTE));
+    preparedQuery.setString(2,""+lavoro.get(GregorianCalendar.YEAR)+"-"+lavoro.get(GregorianCalendar.MONTH)+"-"+lavoro.get(GregorianCalendar.DAY_OF_MONTH)+" "+lavoro.get(GregorianCalendar.HOUR_OF_DAY)+":"+lavoro.get(GregorianCalendar.MINUTE));
+    preparedQuery.setString(3,""+lavoro2.get(GregorianCalendar.YEAR)+"-"+lavoro2.get(GregorianCalendar.MONTH)+"-"+lavoro2.get(GregorianCalendar.DAY_OF_MONTH)+" "+lavoro2.get(GregorianCalendar.HOUR_OF_DAY)+":"+lavoro2.get(GregorianCalendar.MINUTE));
     preparedQuery.setString(4,this.getIDSala());
     preparedQuery.setString(5,this.getID());
     preparedQuery.execute();
@@ -313,7 +315,7 @@ public class Palinsesto implements Serializable{
 
 
   public void DeletePalinsesto() throws SQLException,Exception{
-    this.setConnection();
+    setConnection();
     String query="DELETE FROM Palinsesto WHERE Palinsesto.ID=?;";
     PreparedStatement preparedQuery=connessione.prepareStatement(query);
     preparedQuery.setString(1,this.getID());

@@ -29,12 +29,12 @@ public class Abbonamento implements Serializable{
 
   public Abbonamento(String codice,double costo,String tipo,GregorianCalendar data,int filmDisponibili,int idabbonato) throws Exception{
     if (controllaStringa(codice) && controllaStringa(tipo) && costo>0 && data!=null && filmDisponibili>=0 && idabbonato>0) {
-      Codice=codice;
-      Costo=costo;
-      Tipo=tipo;
-      Scadenza=data;
-      FilmDisponibili=filmDisponibili;
-      IDAbbonato=idabbonato;
+      this.Codice=codice;
+      this.Costo=costo;
+      this.Tipo=tipo;
+      this.Scadenza=data;
+      this.FilmDisponibili=filmDisponibili;
+      this.IDAbbonato=idabbonato;
     }
     else
       throw new Exception("Dati non validi");
@@ -46,7 +46,7 @@ public class Abbonamento implements Serializable{
    * */
 
   private static boolean controllaStringa(String daControllare) {
-    if ((daControllare!=null && daControllare!=""))
+    if ((daControllare!=null && !daControllare.equalsIgnoreCase("")))
       return true;
     else
       return false;
@@ -77,7 +77,7 @@ public class Abbonamento implements Serializable{
 
   public void setCosto(double costo) throws Exception{
     if (costo>0)
-      Costo=costo;
+      this.Costo=costo;
     else
       throw new Exception("Costo dell'abbonametno non valido");
   }
@@ -99,7 +99,7 @@ public class Abbonamento implements Serializable{
 
   public void setTipo(String tipo) throws Exception{
     if (controllaStringa(tipo))
-      Tipo=tipo;
+      this.Tipo=tipo;
     else
       throw new Exception("Tipo non riconosciuto");
   }
@@ -121,7 +121,7 @@ public class Abbonamento implements Serializable{
 
   public void setScadenza(GregorianCalendar scadenza) throws Exception{
     if (scadenza!=null)
-      Scadenza=scadenza;
+      this.Scadenza=scadenza;
     else
       throw new Exception("Data non specificata");
   }
@@ -143,7 +143,7 @@ public class Abbonamento implements Serializable{
 
   public void setFilmDisponibili(int film) throws Exception{
     if (film>0)
-      FilmDisponibili+=film;
+      this.FilmDisponibili+=film;
     else
       throw new Exception("Non puoi aggiungere una quantita negativa");
   }
@@ -165,7 +165,7 @@ public class Abbonamento implements Serializable{
 
   public void setIDAbbonato(int abbonato) throws Exception{
     if (abbonato>0)
-      IDAbbonato=abbonato;
+      this.IDAbbonato=abbonato;
     else
       throw new Exception("Costo dell'abbonametno non valido");
   }
@@ -192,7 +192,7 @@ public class Abbonamento implements Serializable{
       if (controllaStringa(tipo))
         query = query + " AND Tipo=?";
       if (scadenza != null)
-        query = query + " AND Scadenza>?";
+        query = query + " AND Scadenza<?";
       if (filmDisponibili > 0)
         query = query + " AND FilmDisponibili=?";
       if (idAbbonato > 0)
@@ -204,7 +204,7 @@ public class Abbonamento implements Serializable{
         if (controllaStringa(tipo))
           query = query + " AND Tipo=?";
         if (scadenza != null)
-          query = query + " AND Scadenza=?";
+          query = query + " AND Scadenza<?";
         if (filmDisponibili > 0)
           query = query + " AND FilmDisponibili=?";
         if (idAbbonato > 0)
@@ -214,7 +214,7 @@ public class Abbonamento implements Serializable{
         if (controllaStringa(tipo)) {
           query = query + " WHERE Tipo=?";
           if (scadenza != null)
-            query = query + " AND Scadenza=?";
+            query = query + " AND Scadenza<?";
           if (filmDisponibili > 0)
             query = query + " AND FilmDisponibili=?";
           if (idAbbonato > 0)
@@ -222,7 +222,7 @@ public class Abbonamento implements Serializable{
         }
         else {
           if (scadenza != null) {
-            query = query + " WHERE Scadenza=?";
+            query = query + " WHERE Scadenza<?";
             if (filmDisponibili > 0)
               query = query + " AND FilmDisponibili=?";
             if (idAbbonato > 0)
@@ -251,7 +251,7 @@ public class Abbonamento implements Serializable{
         if (controllaStringa(tipo)) {
           preparedQuery.setString(3,tipo);
           if (scadenza!=null) {
-            preparedQuery.setString(4,""+scadenza.get(scadenza.YEAR)+"-"+scadenza.get(scadenza.MONTH)+"-"+scadenza.get(scadenza.DAY_OF_MONTH)+" "+scadenza.get(scadenza.HOUR_OF_DAY)+":"+scadenza.get(scadenza.MINUTE));
+            preparedQuery.setString(4,""+scadenza.get(GregorianCalendar.YEAR)+"-"+(scadenza.get(GregorianCalendar.MONTH)+1)+"-"+scadenza.get(GregorianCalendar.DAY_OF_MONTH)+" "+scadenza.get(GregorianCalendar.HOUR_OF_DAY)+":"+scadenza.get(GregorianCalendar.MINUTE));
             if (filmDisponibili>0) {
               preparedQuery.setInt(5,filmDisponibili);
               if (idAbbonato>0)
@@ -276,7 +276,7 @@ public class Abbonamento implements Serializable{
         }
         else {
           if (scadenza!=null) {
-            preparedQuery.setString(3,""+scadenza.get(scadenza.YEAR)+"-"+scadenza.get(scadenza.MONTH)+"-"+scadenza.get(scadenza.DAY_OF_MONTH)+" "+scadenza.get(scadenza.HOUR_OF_DAY)+":"+scadenza.get(scadenza.MINUTE));
+            preparedQuery.setString(3,""+scadenza.get(GregorianCalendar.YEAR)+"-"+(scadenza.get(GregorianCalendar.MONTH)+1)+"-"+scadenza.get(GregorianCalendar.DAY_OF_MONTH)+" "+scadenza.get(GregorianCalendar.HOUR_OF_DAY)+":"+scadenza.get(GregorianCalendar.MINUTE));
             if (filmDisponibili>0) {
               preparedQuery.setInt(4,filmDisponibili);
               if (idAbbonato>0)
@@ -304,7 +304,7 @@ public class Abbonamento implements Serializable{
         if (controllaStringa(tipo)) {
           preparedQuery.setString(2,tipo);
           if (scadenza!=null) {
-            preparedQuery.setString(3,""+scadenza.get(scadenza.YEAR)+"-"+scadenza.get(scadenza.MONTH)+"-"+scadenza.get(scadenza.DAY_OF_MONTH)+" "+scadenza.get(scadenza.HOUR_OF_DAY)+":"+scadenza.get(scadenza.MINUTE));
+            preparedQuery.setString(3,""+scadenza.get(GregorianCalendar.YEAR)+"-"+(scadenza.get(GregorianCalendar.MONTH)+1)+"-"+scadenza.get(GregorianCalendar.DAY_OF_MONTH)+" "+scadenza.get(GregorianCalendar.HOUR_OF_DAY)+":"+scadenza.get(GregorianCalendar.MINUTE));
             if (filmDisponibili>0) {
               preparedQuery.setInt(4,filmDisponibili);
               if (idAbbonato>0)
@@ -329,7 +329,7 @@ public class Abbonamento implements Serializable{
         }
         else {
           if (scadenza!=null) {
-            preparedQuery.setString(2,""+scadenza.get(scadenza.YEAR)+"-"+scadenza.get(scadenza.MONTH)+"-"+scadenza.get(scadenza.DAY_OF_MONTH)+" "+scadenza.get(scadenza.HOUR_OF_DAY)+":"+scadenza.get(scadenza.MINUTE));
+            preparedQuery.setString(2,""+scadenza.get(GregorianCalendar.YEAR)+"-"+(scadenza.get(GregorianCalendar.MONTH)+1)+"-"+scadenza.get(GregorianCalendar.DAY_OF_MONTH)+" "+scadenza.get(GregorianCalendar.HOUR_OF_DAY)+":"+scadenza.get(GregorianCalendar.MINUTE));
             if (filmDisponibili>0) {
               preparedQuery.setInt(3,filmDisponibili);
               if (idAbbonato>0)
@@ -360,7 +360,7 @@ public class Abbonamento implements Serializable{
         if (controllaStringa(tipo)) {
           preparedQuery.setString(2,tipo);
           if (scadenza!=null) {
-            preparedQuery.setString(3,""+scadenza.get(scadenza.YEAR)+"-"+scadenza.get(scadenza.MONTH)+"-"+scadenza.get(scadenza.DAY_OF_MONTH)+" "+scadenza.get(scadenza.HOUR_OF_DAY)+":"+scadenza.get(scadenza.MINUTE));
+            preparedQuery.setString(3,""+scadenza.get(GregorianCalendar.YEAR)+"-"+(scadenza.get(GregorianCalendar.MONTH)+1)+"-"+scadenza.get(GregorianCalendar.DAY_OF_MONTH)+" "+scadenza.get(GregorianCalendar.HOUR_OF_DAY)+":"+scadenza.get(GregorianCalendar.MINUTE));
             if (filmDisponibili>0) {
               preparedQuery.setInt(4,filmDisponibili);
               if (idAbbonato>0)
@@ -385,7 +385,7 @@ public class Abbonamento implements Serializable{
         }
         else {
           if (scadenza!=null) {
-            preparedQuery.setString(2,""+scadenza.get(scadenza.YEAR)+"-"+scadenza.get(scadenza.MONTH)+"-"+scadenza.get(scadenza.DAY_OF_MONTH)+" "+scadenza.get(scadenza.HOUR_OF_DAY)+":"+scadenza.get(scadenza.MINUTE));
+            preparedQuery.setString(2,""+scadenza.get(GregorianCalendar.YEAR)+"-"+(scadenza.get(GregorianCalendar.MONTH)+1)+"-"+scadenza.get(GregorianCalendar.DAY_OF_MONTH)+" "+scadenza.get(GregorianCalendar.HOUR_OF_DAY)+":"+scadenza.get(GregorianCalendar.MINUTE));
             if (filmDisponibili>0) {
               preparedQuery.setInt(3,filmDisponibili);
               if (idAbbonato>0)
@@ -413,7 +413,7 @@ public class Abbonamento implements Serializable{
         if (controllaStringa(tipo)) {
           preparedQuery.setString(1,tipo);
           if (scadenza!=null) {
-            preparedQuery.setString(2,""+scadenza.get(scadenza.YEAR)+"-"+scadenza.get(scadenza.MONTH)+"-"+scadenza.get(scadenza.DAY_OF_MONTH)+" "+scadenza.get(scadenza.HOUR_OF_DAY)+":"+scadenza.get(scadenza.MINUTE));
+            preparedQuery.setString(2,""+scadenza.get(GregorianCalendar.YEAR)+"-"+(scadenza.get(GregorianCalendar.MONTH)+1)+"-"+scadenza.get(GregorianCalendar.DAY_OF_MONTH)+" "+scadenza.get(GregorianCalendar.HOUR_OF_DAY)+":"+scadenza.get(GregorianCalendar.MINUTE));
             if (filmDisponibili>0) {
               preparedQuery.setInt(3,filmDisponibili);
               if (idAbbonato>0)
@@ -438,7 +438,7 @@ public class Abbonamento implements Serializable{
         }
         else {
           if (scadenza!=null) {
-            preparedQuery.setString(1,""+scadenza.get(scadenza.YEAR)+"-"+scadenza.get(scadenza.MONTH)+"-"+scadenza.get(scadenza.DAY_OF_MONTH)+" "+scadenza.get(scadenza.HOUR_OF_DAY)+":"+scadenza.get(scadenza.MINUTE));
+            preparedQuery.setString(1,""+scadenza.get(GregorianCalendar.YEAR)+"-"+(scadenza.get(GregorianCalendar.MONTH)+1)+"-"+scadenza.get(GregorianCalendar.DAY_OF_MONTH)+" "+scadenza.get(GregorianCalendar.HOUR_OF_DAY)+":"+scadenza.get(GregorianCalendar.MINUTE));
             if (filmDisponibili>0) {
               preparedQuery.setInt(2,filmDisponibili);
               if (idAbbonato>0)
@@ -469,7 +469,8 @@ public class Abbonamento implements Serializable{
     String lavoro;
     while(Risultati.next()) {
       lavoro=Risultati.getString("Scadenza");
-      nuova=new Abbonamento(Risultati.getString("Codice"),Risultati.getDouble("Costo"),Risultati.getString("Tipo"),new GregorianCalendar(Integer.parseInt(lavoro.substring(0,4)),Integer.parseInt(lavoro.substring(5,7)),Integer.parseInt(lavoro.substring(8,10))),Risultati.getInt("FilmDisponibili"),Risultati.getInt("IDAbbonato"));
+      GregorianCalendar dataTemporanea=new GregorianCalendar(Integer.parseInt((lavoro.substring(0,4))),(Integer.parseInt((lavoro.substring(5,7)))-1),Integer.parseInt((lavoro.substring(8,10))),Integer.parseInt((lavoro.substring(11,13))),Integer.parseInt((lavoro.substring(14,16))));
+      nuova=new Abbonamento(Risultati.getString("Codice"),Risultati.getDouble("Costo"),Risultati.getString("Tipo"),dataTemporanea,Risultati.getInt("FilmDisponibili"),Risultati.getInt("IDAbbonato"));
       collezioneDiAbbonamenti.add(nuova);
     }
     Risultati.close();
@@ -483,14 +484,14 @@ public class Abbonamento implements Serializable{
    * */
 
   public void storageAbbonamento() throws SQLException,Exception{
-    this.setConnection();
+    setConnection();
     String query="INSERT INTO Abbonamento(Codice,Costo,Tipo,Scadenza,FilmDisponibili,IDAbbonato) values(?,?,?,?,?,?);";
     PreparedStatement preparedQuery=connessione.prepareStatement(query);
     GregorianCalendar lavoro=this.getScadenza();
     preparedQuery.setString(1,this.getCodice());
     preparedQuery.setDouble(2,this.getCosto());
     preparedQuery.setString(3,this.getTipo());
-    preparedQuery.setString(4,""+lavoro.get(lavoro.YEAR)+"-"+lavoro.get(lavoro.MONTH)+"-"+lavoro.get(lavoro.DAY_OF_MONTH));
+    preparedQuery.setString(4,""+lavoro.get(GregorianCalendar.YEAR)+"-"+lavoro.get(GregorianCalendar.MONTH)+"-"+lavoro.get(GregorianCalendar.DAY_OF_MONTH));
     preparedQuery.setInt(5,this.getFilmDisponibili());
     preparedQuery.setInt(6,this.getIDAbbonato());
     preparedQuery.execute();
@@ -503,13 +504,13 @@ public class Abbonamento implements Serializable{
    * */
 
   public void updateAbbonamento() throws SQLException,Exception{
-    this.setConnection();
+    setConnection();
     String query="UPDATE Abbonamento SET Costo= ?, Tipo= ?, Scadenza= ?, FilmDisponibili= ?, IDAbbonato= ? WHERE Abbonamento.Codice= ?;";
     PreparedStatement preparedQuery=connessione.prepareStatement(query);
     GregorianCalendar lavoro=this.getScadenza();
     preparedQuery.setDouble(1,this.getCosto());
     preparedQuery.setString(2,this.getTipo());
-    preparedQuery.setString(3,""+lavoro.get(lavoro.YEAR)+"-"+lavoro.get(lavoro.MONTH)+"-"+lavoro.get(lavoro.DAY_OF_MONTH));
+    preparedQuery.setString(3,""+lavoro.get(GregorianCalendar.YEAR)+"-"+lavoro.get(GregorianCalendar.MONTH)+"-"+lavoro.get(GregorianCalendar.DAY_OF_MONTH));
     preparedQuery.setInt(4,this.getFilmDisponibili());
     preparedQuery.setInt(5,this.getIDAbbonato());
     preparedQuery.setString(6,this.getCodice());
@@ -523,7 +524,7 @@ public class Abbonamento implements Serializable{
    * */
 
   public void DeleteAbbonamento() throws SQLException,Exception{
-    this.setConnection();
+    setConnection();
     String query="DELETE FROM Abbonamento WHERE Abbonamento.Codice=?;";
     PreparedStatement preparedQuery=connessione.prepareStatement(query);
     preparedQuery.setString(1,this.getCodice());

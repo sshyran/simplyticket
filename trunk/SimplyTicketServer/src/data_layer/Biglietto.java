@@ -50,7 +50,7 @@ public class Biglietto implements Serializable{
    * */
 
   private static boolean controllaStringa(String daControllare) {
-    if ((daControllare!=null && daControllare!=""))
+    if ((daControllare!=null && !daControllare.equalsIgnoreCase("")))
       return true;
     else
       return false;
@@ -61,9 +61,9 @@ public class Biglietto implements Serializable{
    * */
 
   public void setOwner(Abbonamento a) {
-    if (abbonamento!=a) {
-      Abbonamento old=abbonamento;
-      abbonamento=a;
+    if (this.abbonamento!=a) {
+      Abbonamento old=this.abbonamento;
+      this.abbonamento=a;
       if (a!=null)
         a.addBiglietto(this);
       if (old!=null)
@@ -96,7 +96,7 @@ public class Biglietto implements Serializable{
 
   public void setCosto(double costo) throws Exception{
     if (costo>0)
-      CostoIntero=costo;
+      this.CostoIntero=costo;
     else
       throw new Exception("Costo del biglietto non valido");
   }
@@ -118,7 +118,7 @@ public class Biglietto implements Serializable{
 
   public void setCostoRidotto(double costo) throws Exception{
     if (costo>0)
-      CostoRidotto=costo;
+      this.CostoRidotto=costo;
     else
       throw new Exception("Costo del biglietto non valido");
   }
@@ -140,7 +140,7 @@ public class Biglietto implements Serializable{
 
   public void setIDProiezione(String proiezione) throws Exception{
     if (controllaStringa(proiezione))
-      IDProiezione=proiezione;
+      this.IDProiezione=proiezione;
     else
       throw new Exception("Proiezione non valida");
   }
@@ -162,7 +162,7 @@ public class Biglietto implements Serializable{
 
   public void setIDAbbonamento(String abbonamento) throws Exception{
     if (abbonamento!=null)
-      IDAbbonamento=abbonamento;
+      this.IDAbbonamento=abbonamento;
     else
       throw new Exception("Abbonametno non valido");
   }
@@ -184,7 +184,7 @@ public class Biglietto implements Serializable{
 
   public void setIDFila(int fila) throws Exception{
     if (fila>0)
-      IDFila=fila;
+      this.IDFila=fila;
     else
       throw new Exception("Fila non esistente");
   }
@@ -206,7 +206,7 @@ public class Biglietto implements Serializable{
 
   public void setIDPosto(int posto) throws Exception{
     if (posto>0)
-      IDPosto=posto;
+      this.IDPosto=posto;
     else
       throw new Exception("Posto inesistente");
   }
@@ -228,7 +228,7 @@ public class Biglietto implements Serializable{
 
   public void setIDAddetto(int addetto) throws Exception{
     if (addetto>0)
-      IDAddetto=addetto;
+      this.IDAddetto=addetto;
     else
       throw new Exception("Addetto inesistente");
   }
@@ -333,7 +333,7 @@ public class Biglietto implements Serializable{
    * */
 
   public void storageBiglietto() throws SQLException,Exception{
-    this.setConnection();
+    setConnection();
     String query="INSERT INTO Biglietto(IDBiglietto,CostoIntero,CostoRidotto,IDProiezione,IDAbbonamento,IDFila,IDPosto,IDAddetto) values(?,?,?,?,?,?,?,?);";
     PreparedStatement preparedQuery=connessione.prepareStatement(query);
     preparedQuery.setString(1,this.getIDBiglietto());
@@ -353,7 +353,7 @@ public class Biglietto implements Serializable{
    * */
 
   public void updateBiglietto() throws SQLException,Exception{
-    this.setConnection();
+    setConnection();
     String query;
     if (controllaStringa(this.getIDAbbonamento())) {
       query="UPDATE Biglietto SET CostoIntero=?, CostoRidotto=?, IDProiezione=?, IDAbbonamento=?, IDFila=?, IDPosto=?, IDAddetto=? WHERE Biglietto.IDBiglietto=?;";
@@ -387,7 +387,7 @@ public class Biglietto implements Serializable{
    * */
 
   public void DeleteBiglietto() throws SQLException,Exception{
-    this.setConnection();
+    setConnection();
     String query="DELETE FROM Biglietto WHERE Biglietto.IDBiglietto=?;";
     PreparedStatement preparedQuery=connessione.prepareStatement(query);
     preparedQuery.setString(1,this.getIDBiglietto());

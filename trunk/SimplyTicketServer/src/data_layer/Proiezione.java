@@ -31,11 +31,11 @@ public class Proiezione implements Serializable{
 
   public Proiezione(String id,GregorianCalendar data,int bigliettiVenduti,String sala,int film) throws Exception{
     if (controllaStringa(id) && data!=null && bigliettiVenduti>=0 && controllaStringa(sala) && film>0) {
-      ID=id;
-      Data_Ora_Inizio=data;
-      BigliettiVenduti=bigliettiVenduti;
-      IDSala=sala;
-      IDFilm=film;
+      this.ID=id;
+      this.Data_Ora_Inizio=data;
+      this.BigliettiVenduti=bigliettiVenduti;
+      this.IDSala=sala;
+      this.IDFilm=film;
     }
     else
       throw new Exception("Valori non validi per la proiezione");
@@ -47,7 +47,7 @@ public class Proiezione implements Serializable{
    * */
 
   private static boolean controllaStringa(String daControllare) {
-     if ((daControllare!=null && daControllare!="") || daControllare.endsWith("\n"))
+     if ((daControllare!=null && !daControllare.equalsIgnoreCase("")) || daControllare.endsWith("\n"))
        return true;
      else
        return false;
@@ -80,7 +80,7 @@ public class Proiezione implements Serializable{
 
   public void setDatOraInizio(GregorianCalendar data) throws Exception{
     if (data!=null)
-      Data_Ora_Inizio=data;
+      this.Data_Ora_Inizio=data;
     else
       throw new Exception("Data non valida");
   }
@@ -103,7 +103,7 @@ public class Proiezione implements Serializable{
 
   public void setBigliettiVenduti(int biglietti) throws Exception{
     if (biglietti>0)
-      BigliettiVenduti=biglietti;
+      this.BigliettiVenduti=biglietti;
     else
       throw new Exception("Nuemro di biglietti venduti non valido");
   }
@@ -127,7 +127,7 @@ public class Proiezione implements Serializable{
 
   public void setIDSala(String sala) throws Exception{
     if (controllaStringa(sala))
-      IDSala=sala;
+      this.IDSala=sala;
     else
       throw new Exception("Sala non valida");
   }
@@ -151,7 +151,7 @@ public class Proiezione implements Serializable{
 
   public void setIDFilm(int film) throws Exception{
     if (film>0)
-      IDFilm=film;
+      this.IDFilm=film;
     else
       throw new Exception("Film non esistente");
   }
@@ -286,13 +286,24 @@ public class Proiezione implements Serializable{
       preparedQuery.setString(1,id);
       if (data!=null) {
         int mese=data.get(data.MONTH)+1;
-        preparedQuery.setString(2,""+data.get(data.YEAR)+"-"+data.get(data.MONTH)+"-"+data.get(data.DAY_OF_MONTH)+" "+data.get(data.HOUR_OF_DAY)+":"+data.get(data.MINUTE));
+        preparedQuery.setString(2,""+data.get(data.YEAR)+"-"+mese+"-"+data.get(data.DAY_OF_MONTH)+" "+data.get(data.HOUR_OF_DAY)+":"+data.get(data.MINUTE));
         data.add(data.DAY_OF_MONTH,1);
-        data.set(data.HOUR,03);
-        data.set(data.MINUTE,00);
-        preparedQuery.setString(2,""+data.get(data.YEAR)+"-"+data.get(data.MONTH)+"-"+data.get(data.DAY_OF_MONTH)+" "+data.get(data.HOUR_OF_DAY)+":"+data.get(data.MINUTE));
+//        data.set(data.HOUR,03);
+//        data.set(data.MINUTE,00);
+        preparedQuery.setString(3,""+data.get(data.YEAR)+"-"+mese+"-"+data.get(data.DAY_OF_MONTH)+" "+data.get(data.HOUR_OF_DAY)+":"+data.get(data.MINUTE));
         if (bigliettiVenduti>=0) {
-          preparedQuery.setInt(3,bigliettiVenduti);
+          preparedQuery.setInt(4,bigliettiVenduti);
+          if (controllaStringa(sala)) {
+            preparedQuery.setString(5,sala);
+            if (film>0)
+              preparedQuery.setInt(6,film);
+          }
+          else {
+            if (film>0)
+              preparedQuery.setString(5,id);
+          }
+        }
+        else {
           if (controllaStringa(sala)) {
             preparedQuery.setString(4,sala);
             if (film>0)
@@ -300,18 +311,7 @@ public class Proiezione implements Serializable{
           }
           else {
             if (film>0)
-              preparedQuery.setString(4,id);
-          }
-        }
-        else {
-          if (controllaStringa(sala)) {
-            preparedQuery.setString(3,sala);
-            if (film>0)
               preparedQuery.setInt(4,film);
-          }
-          else {
-            if (film>0)
-              preparedQuery.setInt(3,film);
           }
         }
       }
@@ -344,13 +344,24 @@ public class Proiezione implements Serializable{
     else {
       if (data!=null) {
         int mese=data.get(data.MONTH)+1;
-        preparedQuery.setString(1,""+data.get(data.YEAR)+"-"+data.get(data.MONTH)+"-"+data.get(data.DAY_OF_MONTH)+" "+data.get(data.HOUR_OF_DAY)+":"+data.get(data.MINUTE));
+        preparedQuery.setString(1,""+data.get(data.YEAR)+"-"+mese+"-"+data.get(data.DAY_OF_MONTH)+" "+data.get(data.HOUR_OF_DAY)+":"+data.get(data.MINUTE));
         data.add(data.DAY_OF_MONTH,1);
-        data.set(data.HOUR,03);
-        data.set(data.MINUTE,00);
-        preparedQuery.setString(2,""+data.get(data.YEAR)+"-"+data.get(data.MONTH)+"-"+data.get(data.DAY_OF_MONTH)+" "+data.get(data.HOUR_OF_DAY)+":"+data.get(data.MINUTE));
+//        data.set(data.HOUR,03);
+//        data.set(data.MINUTE,00);
+        preparedQuery.setString(2,""+data.get(data.YEAR)+"-"+mese+"-"+data.get(data.DAY_OF_MONTH)+" "+data.get(data.HOUR_OF_DAY)+":"+data.get(data.MINUTE));
         if (bigliettiVenduti>=0) {
-          preparedQuery.setInt(2,bigliettiVenduti);
+          preparedQuery.setInt(3,bigliettiVenduti);
+          if (controllaStringa(sala)) {
+            preparedQuery.setString(4,sala);
+            if (film>0)
+              preparedQuery.setInt(5,film);
+          }
+          else {
+            if (film>0)
+              preparedQuery.setInt(4,film);
+          }
+        }
+        else {
           if (controllaStringa(sala)) {
             preparedQuery.setString(3,sala);
             if (film>0)
@@ -359,17 +370,6 @@ public class Proiezione implements Serializable{
           else {
             if (film>0)
               preparedQuery.setInt(3,film);
-          }
-        }
-        else {
-          if (controllaStringa(sala)) {
-            preparedQuery.setString(2,sala);
-            if (film>0)
-              preparedQuery.setInt(3,film);
-          }
-          else {
-            if (film>0)
-              preparedQuery.setInt(2,film);
           }
         }
       }
@@ -406,7 +406,9 @@ public class Proiezione implements Serializable{
     String lavoro="";
     while(Risultati.next()) {
       lavoro=Risultati.getString(2);
-      nuova=new Proiezione(Risultati.getString("ID"),new GregorianCalendar(Integer.parseInt((lavoro.substring(0,4))),(Integer.parseInt((lavoro.substring(5,7)))-1),Integer.parseInt((lavoro.substring(8,10))),Integer.parseInt((lavoro.substring(11,13))),Integer.parseInt((lavoro.substring(14,16)))),Risultati.getInt("BigliettiVenduti"),Risultati.getString("IDSala"),Risultati.getInt("IDFilm"));
+      GregorianCalendar dataTemporanea=new GregorianCalendar(Integer.parseInt((lavoro.substring(0,4))),(Integer.parseInt((lavoro.substring(5,7)))-1),Integer.parseInt((lavoro.substring(8,10))),Integer.parseInt((lavoro.substring(11,13))),Integer.parseInt((lavoro.substring(14,16))));
+//      System.out.println(dataTemporanea.get(GregorianCalendar.YEAR)+"-"+(dataTemporanea.get(GregorianCalendar.MONTH)+1)+"-"+dataTemporanea.get(GregorianCalendar.DAY_OF_MONTH)+"-"+dataTemporanea.get(GregorianCalendar.HOUR_OF_DAY)+"-"+dataTemporanea.get(GregorianCalendar.MINUTE));
+      nuova=new Proiezione(Risultati.getString("ID"),dataTemporanea,Risultati.getInt("BigliettiVenduti"),Risultati.getString("IDSala"),Risultati.getInt("IDFilm"));
       collezioneDiProiezioni.add(nuova);
     }
     return collezioneDiProiezioni;
@@ -420,12 +422,13 @@ public class Proiezione implements Serializable{
 
 
   public void storageProiezione() throws SQLException,Exception{
-    this.setConnection();
+    setConnection();
     String query="INSERT INTO Proiezione(ID,Data_Ora_Inizio,BigliettiVenduti,IDSala,IDFilm) values(?,?,?,?,?);";
     PreparedStatement preparedQuery=connessione.prepareStatement(query);
     GregorianCalendar lavoro=(GregorianCalendar)this.getDataOraInizio();
     preparedQuery.setString(1,this.getID());
-    preparedQuery.setString(2,""+lavoro.get(GregorianCalendar.YEAR)+"-"+lavoro.get(lavoro.MONTH)+"-"+lavoro.get(lavoro.DAY_OF_MONTH)+" "+lavoro.get(lavoro.HOUR_OF_DAY)+":"+lavoro.get(lavoro.MINUTE));
+    int mese=lavoro.get(GregorianCalendar.MONTH)+1;
+    preparedQuery.setString(2,""+lavoro.get(GregorianCalendar.YEAR)+"-"+mese+"-"+lavoro.get(GregorianCalendar.DAY_OF_MONTH)+" "+lavoro.get(GregorianCalendar.HOUR_OF_DAY)+":"+lavoro.get(GregorianCalendar.MINUTE));
     preparedQuery.setInt(3,this.getBigliettiVenduti());
     preparedQuery.setString(4,this.getIDSala());
     preparedQuery.setInt(5,this.getIDFilm());
@@ -440,11 +443,12 @@ public class Proiezione implements Serializable{
    * */
 
   public void updateProiezione() throws SQLException,Exception{
-    this.setConnection();
+    setConnection();
     String query="UPDATE Proiezione SET Data_Ora_Inizio=?, BigliettiVenduti=?, IDSala=?, IDFilm=? WHERE Proiezione.ID=?;";
     PreparedStatement preparedQuery=connessione.prepareStatement(query);
     GregorianCalendar lavoro=(GregorianCalendar)this.getDataOraInizio();
-    preparedQuery.setString(1,""+lavoro.get(lavoro.YEAR)+"-"+lavoro.get(lavoro.MONTH)+"-"+lavoro.get(lavoro.DAY_OF_MONTH)+" "+lavoro.get(lavoro.HOUR_OF_DAY)+":"+lavoro.get(lavoro.MINUTE));
+    int mese=lavoro.get(GregorianCalendar.MONTH)+1;
+    preparedQuery.setString(1,""+lavoro.get(GregorianCalendar.YEAR)+"-"+mese+"-"+lavoro.get(GregorianCalendar.DAY_OF_MONTH)+" "+lavoro.get(GregorianCalendar.HOUR_OF_DAY)+":"+lavoro.get(GregorianCalendar.MINUTE));
     preparedQuery.setInt(2,this.getBigliettiVenduti());
     preparedQuery.setString(3,this.getIDSala());
     preparedQuery.setInt(4,this.getIDFilm());
@@ -460,7 +464,7 @@ public class Proiezione implements Serializable{
 
 
   public void DeleteProiezione() throws SQLException,Exception{
-    this.setConnection();
+    setConnection();
     String query="DELETE FROM Proiezione WHERE Proiezione.ID=?;";
     PreparedStatement preparedQuery=connessione.prepareStatement(query);
     preparedQuery.setString(1,this.getID());

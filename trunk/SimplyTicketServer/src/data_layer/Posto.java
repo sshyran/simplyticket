@@ -26,11 +26,11 @@ public class Posto implements Serializable{
    * * */
 
   public Posto(int id,boolean occupato,int fila,String proiezione) throws Exception{
-    if (id>0 && fila>0 && proiezione!=null && proiezione!="") {
-      ID=id;
-      Occupato=occupato;
-      IDFila=fila;
-      IDProiezione=proiezione;
+    if (id>0 && fila>0 && proiezione!=null && !proiezione.equalsIgnoreCase("")) {
+      this.ID=id;
+      this.Occupato=occupato;
+      this.IDFila=fila;
+      this.IDProiezione=proiezione;
     }
     else
       throw new Exception("Posizione specificata non valida. Controlla i valori immessi");
@@ -60,7 +60,7 @@ public class Posto implements Serializable{
 
 
   public void setOccupato(boolean occupato) {
-      Occupato=occupato;
+      this.Occupato=occupato;
   }
 
   /**Ritorna l'ID della fila
@@ -82,7 +82,7 @@ public class Posto implements Serializable{
 
   public void setIDFila(int fila) throws Exception{
     if (fila>0)
-      IDFila=fila;
+      this.IDFila=fila;
     else
       throw new Exception("Bisogna specificare la fila di appartenenza");
   }
@@ -104,8 +104,8 @@ public class Posto implements Serializable{
 
 
   public void setIDProiezione(String proiezione) throws Exception{
-    if (proiezione!=null && proiezione!="")
-      IDProiezione=proiezione;
+    if (proiezione!=null && !proiezione.equalsIgnoreCase(""))
+      this.IDProiezione=proiezione;
     else
       throw new Exception("Bisogna specificare la fila di appartenenza");
   }
@@ -130,22 +130,22 @@ public class Posto implements Serializable{
         query=query+" AND Occupato=?";
         if (fila>0) {
           query = query + " AND IDFila=?";
-          if (proiezione!= null && proiezione!="")
+          if (proiezione!= null && !proiezione.equalsIgnoreCase(""))
             query = query + " AND IDProiezione=?";
         }
         else {
-          if (proiezione!= null && proiezione!="")
+          if (proiezione!= null && !proiezione.equalsIgnoreCase(""))
             query = query + " AND IDProiezione=?";
         }
       }
       else
       if (fila>0) {
           query = query + " AND IDFila=?";
-          if (proiezione!= null && proiezione!="")
+          if (proiezione!= null && !proiezione.equalsIgnoreCase(""))
             query = query + " AND IDProiezione=?";
         }
         else {
-          if (proiezione!= null && proiezione!="")
+          if (proiezione!= null && !proiezione.equalsIgnoreCase(""))
             query = query + " AND IDProiezione=?";
         }
     }
@@ -154,22 +154,22 @@ public class Posto implements Serializable{
         query=query+" WHERE Occupato=?";
         if (fila>0) {
           query = query + " AND IDFila=?";
-          if (proiezione!= null && proiezione!="")
+          if (proiezione!= null && !proiezione.equalsIgnoreCase(""))
             query = query + " AND IDProiezione=?";
         }
         else {
-          if (proiezione!= null && proiezione!="")
+          if (proiezione!= null && !proiezione.equalsIgnoreCase(""))
             query = query + " AND IDProiezione=?";
         }
       }
       else
       if (fila>0) {
           query = query + " WHERE IDFila=?";
-          if (proiezione!= null && proiezione!="")
+          if (proiezione!= null && !proiezione.equalsIgnoreCase(""))
             query = query + " AND IDProiezione=?";
         }
         else {
-          if (proiezione!= null && proiezione!="")
+          if (proiezione!= null && !proiezione.equalsIgnoreCase(""))
             query = query + " WHERE IDProiezione=?";
         }
     }
@@ -181,22 +181,22 @@ public class Posto implements Serializable{
         preparedQuery.setBoolean(2,occupato);
         if (fila>0) {
           preparedQuery.setInt(3,fila);
-          if (proiezione!= null && proiezione!="")
+          if (proiezione!= null && !proiezione.equalsIgnoreCase(""))
             preparedQuery.setString(4,proiezione);
         }
         else {
-          if (proiezione!=null && proiezione!="")
+          if (proiezione!=null && !proiezione.equalsIgnoreCase(""))
             preparedQuery.setString(3,proiezione);
         }
       }
       else
       if (fila>0) {
           preparedQuery.setInt(2,fila);
-          if (proiezione!= null && proiezione!="")
+          if (proiezione!= null && !proiezione.equalsIgnoreCase(""))
             preparedQuery.setString(3,proiezione);
         }
         else {
-          if (proiezione!= null && proiezione!="")
+          if (proiezione!= null && !proiezione.equalsIgnoreCase(""))
             preparedQuery.setString(2,proiezione);
         }
     }
@@ -205,22 +205,22 @@ public class Posto implements Serializable{
         preparedQuery.setBoolean(1,occupato);
         if (fila>0) {
           preparedQuery.setInt(2,fila);
-          if (proiezione!= null && proiezione!="")
+          if (proiezione!= null && !proiezione.equalsIgnoreCase(""))
             preparedQuery.setString(3,proiezione);
         }
         else {
-          if (proiezione!= null && proiezione!="")
+          if (proiezione!= null && !proiezione.equalsIgnoreCase(""))
             preparedQuery.setString(2,proiezione);
         }
       }
       else
       if (fila>0) {
           preparedQuery.setInt(1,fila);
-          if (proiezione!= null && proiezione!="")
+          if (proiezione!= null && !proiezione.equalsIgnoreCase(""))
             preparedQuery.setString(2,proiezione);
         }
         else {
-          if (proiezione!= null && proiezione!="")
+          if (proiezione!= null && !proiezione.equalsIgnoreCase(""))
             preparedQuery.setString(1,proiezione);
         }
     }
@@ -241,7 +241,7 @@ public class Posto implements Serializable{
      * */
 
   public void storagePosto() throws SQLException,Exception{
-    this.setConnection();
+    setConnection();
     String query="INSERT INTO Posto(ID,Occupato,IDFila,IDProiezione) values(?,?,?,?);";
     PreparedStatement preparedQuery=connessione.prepareStatement(query);
     preparedQuery.setInt(1,this.getID());
@@ -258,7 +258,7 @@ public class Posto implements Serializable{
      * */
 
   public void updatePosto() throws SQLException,Exception{
-    this.setConnection();
+    setConnection();
     String query="UPDATE Posto SET ID=?, Occupato=?, IDFila=? IDProiezione=? WHERE Posto.ID=? AND Posto.IDFila=? AND Posto.IDProiezione=?;";
     PreparedStatement preparedQuery=connessione.prepareStatement(query);
     preparedQuery.setInt(1,this.getID());
@@ -276,7 +276,7 @@ public class Posto implements Serializable{
 
 
   public void DeletePosto() throws SQLException,Exception{
-    this.setConnection();
+    setConnection();
     String query="DELETE FROM Posto WHERE Posto.ID=? AND Posto.IDFila=? AND Posto.IDProiezione=?;";
     PreparedStatement preparedQuery=connessione.prepareStatement(query);
     preparedQuery.setInt(1,this.getID());

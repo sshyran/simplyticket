@@ -27,9 +27,9 @@ public class Sala implements Serializable{
 
   public Sala(String nome,int capacita,String struttura) throws Exception{
     if (controllaStringa(nome) && capacita>0 && controllaStringa(struttura)) {
-      Nome=nome;
-      capacita=capacita;
-      IDStruttura=struttura;
+      this.Nome=nome;
+      this.capacita=capacita;
+      this.IDStruttura=struttura;
     }
     else
       throw new Exception("Dati per la sala non validi");
@@ -42,7 +42,7 @@ public class Sala implements Serializable{
    * */
 
   private static boolean controllaStringa(String daControllare) {
-    if ((daControllare!=null && daControllare!=""))
+    if ((daControllare!=null && !daControllare.equalsIgnoreCase("")))
       return true;
     else
       return false;
@@ -68,7 +68,7 @@ public class Sala implements Serializable{
 
   public void setNome(String nome) throws Exception{
     if (controllaStringa(nome))
-      Nome=nome;
+      this.Nome=nome;
     else
       throw new Exception("Nome Sala non definito");
   }
@@ -95,7 +95,7 @@ public class Sala implements Serializable{
 
   public void setcapacita(int capacita) throws Exception{
     if (capacita>0)
-      capacita=capacita;
+      this.capacita=capacita;
     else
       throw new Exception("capacita non definita");
   }
@@ -120,7 +120,7 @@ public class Sala implements Serializable{
 
   public void setIDStruttura(String idstruttura) throws Exception{
     if (controllaStringa(idstruttura))
-      IDStruttura=idstruttura;
+      this.IDStruttura=idstruttura;
     else
       throw new Exception("Struttura inesistente");
   }
@@ -215,7 +215,7 @@ public class Sala implements Serializable{
 
 
   public void storageSala() throws SQLException,Exception{
-    this.setConnection();
+    setConnection();
     String query="INSERT INTO Sala(Nome,capacita,IDStruttura) values(?,?,?);";
     PreparedStatement preparedQuery=connessione.prepareStatement(query);
     preparedQuery.setString(1,getNome());
@@ -233,7 +233,7 @@ public class Sala implements Serializable{
 
 
   public void updateSala() throws SQLException,Exception{
-    this.setConnection();
+    setConnection();
     String query="UPDATE Sala SET Nome= ?, capacita=?, IDStruttura=? WHERE Sala.Nome=?;";
     PreparedStatement preparedQuery=connessione.prepareStatement(query);
     preparedQuery.setString(1,this.getNome());
@@ -251,7 +251,7 @@ public class Sala implements Serializable{
      * */
 
   public void DeleteSala() throws SQLException,Exception{
-    this.setConnection();
+    setConnection();
     String query="DELETE FROM Sala WHERE Sala.Nome=?;";
     PreparedStatement preparedQuery=connessione.prepareStatement(query);
     preparedQuery.setString(1,this.getNome());

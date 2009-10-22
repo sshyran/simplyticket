@@ -34,12 +34,12 @@ public class Abbonato extends Persona implements Serializable{
   public Abbonato(String nome, String cognome, String indirizzo, String telefono, String residenza, String email,int idabbonato,int idpersona) throws Exception{
     super(idpersona,nome,cognome,indirizzo,telefono,residenza,email,false);
     if (idabbonato>0 && idpersona>0) {
-      IDAbbonato = idabbonato;
-      IDPersona = idpersona;
+      this.IDAbbonato = idabbonato;
+      this.IDPersona = idpersona;
     }
     else
       throw new Exception("ID non validi");
-    Account = new HashSet();
+    this.Account = new HashSet();
   }
 
   /**Aggunge un nuovo abbonamento
@@ -47,7 +47,7 @@ public class Abbonato extends Persona implements Serializable{
    * */
 
   public void addAbbonamento(Abbonamento a) {
-    Account.add(a);
+    this.Account.add(a);
     a.setOwner(this);
   }
 
@@ -56,7 +56,7 @@ public class Abbonato extends Persona implements Serializable{
    * */
 
   public void deleteAbbonamento(Abbonamento a) {
-    Account.remove(a);
+    this.Account.remove(a);
     a.setOwner(null);
   }
 
@@ -85,7 +85,7 @@ public class Abbonato extends Persona implements Serializable{
 
   public void setIDPersona(int persona) throws Exception{
     if (persona>0)
-      IDPersona=persona;
+      this.IDPersona=persona;
     else
       throw new Exception("Campo Password vuoto");
   }
@@ -140,7 +140,7 @@ public class Abbonato extends Persona implements Serializable{
    * */
 
   public void storageAbbonato() throws SQLException,Exception{
-    this.setConnection();
+    setConnection();
     String array[]=new String[8];
     array[0]=""+super.getID();
     if ((super.LoadPersona(array)).isEmpty())
@@ -176,7 +176,7 @@ public class Abbonato extends Persona implements Serializable{
    * */
 
   public void updateAbbonato() throws SQLException,Exception{
-    this.setConnection();
+    setConnection();
     super.updatePersona();
     String query="UPDATE Abbonato SET IDPersona=? WHERE Abbonato.IDAbbonato=?;";
     PreparedStatement preparedQuery=connessione.prepareStatement(query);
@@ -191,7 +191,7 @@ public class Abbonato extends Persona implements Serializable{
    * */
 
   public void DeleteAbbonato() throws SQLException,Exception{
-    this.setConnection();
+    setConnection();
     String query="DELETE FROM Abbonato WHERE Abbonato.IDAbbonato=?;";
     PreparedStatement preparedQuery=connessione.prepareStatement(query);
     preparedQuery.setInt(1,this.getIDAbbonato());

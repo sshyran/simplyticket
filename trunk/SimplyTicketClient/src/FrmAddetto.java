@@ -73,7 +73,7 @@ public class FrmAddetto extends JFrame {
     btnGestAbb.setMaximumSize(new Dimension(145, 25));
     btnGestAbb.setMinimumSize(new Dimension(145, 25));
     btnGestAbb.setPreferredSize(new Dimension(160, 30));
-    btnGestAbb.setToolTipText("Permette di accedere alle funzionalità per la gestione degli abbonamenti");
+    btnGestAbb.setToolTipText("Permette di accedere alle funzionalitï¿½ per la gestione degli abbonamenti");
     btnGestAbb.setText("Gestione Abbonamenti");
     btnGestAbb.addActionListener(new FrmAddetto_btnGestAbb_actionAdapter(this));
     btnGestBigl.setEnabled(false);
@@ -82,7 +82,7 @@ public class FrmAddetto extends JFrame {
     btnGestBigl.setMaximumSize(new Dimension(145, 25));
     btnGestBigl.setMinimumSize(new Dimension(145, 25));
     btnGestBigl.setPreferredSize(new Dimension(160, 30));
-    btnGestBigl.setToolTipText("Permette di accedere alle funzionalità per la gestione della biglietteria");
+    btnGestBigl.setToolTipText("Permette di accedere alle funzionalitÃ  per la gestione della biglietteria");
     btnGestBigl.setHorizontalTextPosition(SwingConstants.LEADING);
     btnGestBigl.setText("Gestione Biglietteria");
     btnGestBigl.addActionListener(new FrmAddetto_btnGestBigl_actionAdapter(this));

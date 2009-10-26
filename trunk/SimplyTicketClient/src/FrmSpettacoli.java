@@ -141,6 +141,8 @@ public class FrmSpettacoli extends JFrame implements Runnable{
     }
     int numeroFile=listaPoltrone.size()/lunghezzaFila;
     this.visualizzaPosti(lunghezzaFila,numeroFile);
+    pnlDx.setSize(55*lunghezzaFila, 55*numeroFile);
+    pnlSx.setSize(55*lunghezzaFila, 55*numeroFile);
     cbFila.removeAllItems();
     for (int i=0;i<numeroFile;i++) {
         cbFila.addItem(""+generaLettera(i));
@@ -171,7 +173,8 @@ public class FrmSpettacoli extends JFrame implements Runnable{
       pnlSx.add(new JLabel(this.generaLettera(i)));
       for (int j=0;j<lunghezzaFila;j++) {
         try {
-          if (((String[]) listaPoltrone.getIndex((i*lunghezzaFila)+j))[2].equals("TRUE")) {//serve per costruire l'indice della poltrona allìinternodella collezione
+          if (((String[]) listaPoltrone.getIndex((i*lunghezzaFila)+j))[2].equals("TRUE")) {
+              //serve per costruire l'indice della poltrona allï¿½internodella collezione
             stato = true;
           }
           else
@@ -207,7 +210,7 @@ public class FrmSpettacoli extends JFrame implements Runnable{
           x=listaPoltrone.size()/lunghezzaFila;
         }
         catch (Exception e) {
-          System.out.println("LUMNGHEZZAADASDASD è: "+x);
+          System.out.println("LUMNGHEZZAADASDASD ï¿½: "+x);
         }
         this.visualizzaPosti(lunghezzaFila,x);
         pnlDx.setVisible(true);
@@ -441,7 +444,7 @@ public class FrmSpettacoli extends JFrame implements Runnable{
           controllerBiglietteria.annullaTicket(IDProiezione, posto, fila, "no");
         }
         catch (Exception ex) {
-          JOptionPane.showMessageDialog(null,"            Ormai è tardi, dovevi venire prima.","Errore",JOptionPane.ERROR_MESSAGE);
+          JOptionPane.showMessageDialog(null,"            Ormai ï¿½ tardi, dovevi venire prima.","Errore",JOptionPane.ERROR_MESSAGE);
         }
       }
     }

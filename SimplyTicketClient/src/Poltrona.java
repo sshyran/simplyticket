@@ -16,10 +16,10 @@ public class Poltrona extends JButton{
   private boolean stato;
   public  boolean selezionato;
 
-  private static ImageIcon imgGreen= new ImageIcon(Poltrona.class.getResource("verde.gif"));
-  private static ImageIcon imgRed= new ImageIcon(Poltrona.class.getResource("red.jpg"));
-  private static ImageIcon imgGreenS=new ImageIcon(Poltrona.class.getResource("verdeS.jpg"));
-  private static ImageIcon imgRedS=new ImageIcon(Poltrona.class.getResource("redS.jpg"));
+  private static ImageIcon imgGreen= new ImageIcon("C:\\SimplyTicket\\verde.gif");
+  private static ImageIcon imgRed= new ImageIcon("C:\\SimplyTicket\\red.jpg");
+  private static ImageIcon imgGreenS=new ImageIcon("C:\\SimplyTicket\\verdeS.jpg");
+  private static ImageIcon imgRedS=new ImageIcon("C:\\SimplyTicket\\redS.jpg");
 
 
   public void setLibero() {

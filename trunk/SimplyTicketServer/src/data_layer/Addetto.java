@@ -212,6 +212,7 @@ public class Addetto extends Persona implements Serializable{
         }
     }
     ResultSet Risultati=preparedQuery.executeQuery();
+    System.out.println(query);
     Collezione collezioneDiAddetti=new CollezioneArrayList();
     Addetto nuovo;
     boolean bol;

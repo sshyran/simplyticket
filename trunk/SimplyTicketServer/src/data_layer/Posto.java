@@ -259,10 +259,11 @@ public class Posto implements Serializable{
 
   public void updatePosto() throws SQLException,Exception{
     setConnection();
-    String query="UPDATE Posto SET ID=?, Occupato=?, IDFila=? IDProiezione=? WHERE Posto.ID=? AND Posto.IDFila=? AND Posto.IDProiezione=?;";
+    //String query="UPDATE Posto SET ID=?, Occupato=?, IDFila=? IDProiezione=? WHERE Posto.ID=? AND Posto.IDFila=? AND Posto.IDProiezione=?;";
+    String query="UPDATE Posto SET Occupato=? WHERE Posto.ID=? AND Posto.IDFila=? AND Posto.IDProiezione=?;";
     PreparedStatement preparedQuery=connessione.prepareStatement(query);
-    preparedQuery.setInt(1,this.getID());
-    preparedQuery.setBoolean(2,this.getOccupato());
+    preparedQuery.setBoolean(1,this.getOccupato());
+    preparedQuery.setInt(2,this.getID());
     preparedQuery.setInt(3,this.getIDFila());
     preparedQuery.setString(4,this.getIDProiezione());
     preparedQuery.execute();

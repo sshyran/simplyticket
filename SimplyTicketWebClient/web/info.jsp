@@ -12,7 +12,7 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>JSP Page</title>
+        <title>Simply Ticket - Info</title>
     </head>
     <body>
         <h1>Information on who developed the system and those who maintain</h1>

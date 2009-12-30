@@ -14,7 +14,7 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>JSP Page</title>
+        <title>Simply Ticket - Gestione Biglietteria</title>
     </head>
     <body>
         <h1>Proiezioni!</h1>
@@ -24,11 +24,13 @@
         if (sessionValue==null) {
             throw new ServletException("Login non effettuato");
         }
+        ArrayList arrayList = (ArrayList)request.getAttribute("films_availables");
         %>
                 <%
+                if (arrayList!=null && arrayList.size()>0) {
                 out.println("<form name=\"visualizzaPosti\" action=\"visualizzaPosti\">");
                 out.println("<table border=\"1\">\n\t<thead>\n\t<tr>\n\t<th></th>\n\t<th>Sala</th>\n\t<th>Film</th>\n\t<th>Disponibilità</th>\n\t</tr>\n\t</thead>\n\t<tbody>");
-                ArrayList arrayList = (ArrayList)request.getAttribute("films_availables");
+                
                 for (Iterator iter = arrayList.iterator(); iter.hasNext();) {
                     ProiezioneGiornaliera element = (ProiezioneGiornaliera) iter.next();
                     out.println("<tr>");
@@ -39,6 +41,10 @@
                     out.println("</tr>");
                 }
                 out.println("</tbody></table><input type=\"submit\" value=\"invio\" name=\"invio\" /></form>");
+                }
+                else {
+                out.println("Non ci sono proiezioni o hai sbagliato i parametri");
+                }
                 %>
                 <a href="index.jsp">Back</a>
     </body>

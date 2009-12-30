@@ -19,6 +19,7 @@
         Uri: ${pageContext.errorData.requestURI}<br>
         Status Code: ${pageContext.errorData.statusCode}<br>
         Exception: ${pageContext.errorData.throwable.message}<br>
+        Caused By: ${pageContext.errorData.throwable.cause.message} in ${pageContext.errorData.throwable.cause.class}<br>
         <a href="index.jsp">Back to the main page</a>
     </body>
 </html>

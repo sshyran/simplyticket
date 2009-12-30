@@ -15,7 +15,7 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>JSP Page</title>
+        <title>Simply Ticket - Visualizza Posti</title>
     </head>
     <body>
         <%
@@ -24,12 +24,13 @@
         if (sessionValue==null) {
             throw new ServletException("Login non effettuato");
         }
+        ArrayList arrayList = (ArrayList)request.getAttribute("posti");
         %>
         <h1>Posti!</h1>
         <%
+            if (arrayList!=null && arrayList.size()>0) {
                 out.println("<form name=\"prenotaPosti\" action=\"prenotaPosti\">");
                 out.println("<table border=\"1\">\n\t<thead>\n\t<tr>\n\t<th>Prenota</th>\n\t<th>Rimborso</th>\n\t<th>Proiezione</th>\n\t<th>ID Posto</th>\n\t<th>ID Fila</th>\n\t<th>Occupato</th>\n\t</tr>\n\t</thead>\n\t<tbody>");
-                ArrayList arrayList = (ArrayList)request.getAttribute("posti");
                 for (Iterator iter = arrayList.iterator(); iter.hasNext();) {
                     Posto element = (Posto) iter.next();
                     out.println("<tr>");
@@ -43,7 +44,11 @@
                 }
                 out.println("<input type=\"text\" name=\"txtCostoIntero\" value=\"5.0\" /><input type=\"text\" name=\"txtCostoRidotto\" value=\"3.5\" />");
                 out.println("</tbody></table><input type=\"submit\" value=\"invio\" name=\"invio\" /></form>");
-                
+
+            }
+            else {
+                out.println("Parametri non corretti");
+            }
                 %>
                 <a href="index.jsp">Back</a>
 

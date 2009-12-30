@@ -15,24 +15,31 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>JSP Page</title>
+        <title>Simply Ticket - Tabellone</title>
     </head>
     <body>
-        <% int limit=((Integer)(request.getAttribute("NUM_PG"))).intValue();%>
+        <%
+            //int limit=((Integer)(request.getAttribute("NUM_PG"))).intValue();
+            ArrayList arrayList = (ArrayList)request.getAttribute("PG");
+        %>
         <h1>Proiezioni!</h1>    
                 <%
-                out.println("<table border=\"1\">\n\t<thead>\n\t<tr>\n\t<th>sala</th>\n\t<th>film</th>\n\t<th>disponibilità</th>\n\t<th>inizio</th>\n\t</tr>\n\t</thead>\n\t<tbody>");
-                ArrayList arrayList = (ArrayList)request.getAttribute("PG");
-                for (Iterator iter = arrayList.iterator(); iter.hasNext();) {
-                    ProiezioneGiornaliera element = (ProiezioneGiornaliera) iter.next();
-                    out.println("<tr>");
-                            out.println("<td>"+element.getSala()+"</td>");
-                            out.println("<td>"+element.getTitolo()+"</td>");
-                            out.println("<td>"+element.getDisponibilita()+"</td>");
-                            out.println("<td>"+element.getOrario()+"</td>");
-                     out.println("</tr>");
+                if (arrayList!=null && arrayList.size()>0) {
+                    out.println("<table border=\"1\">\n\t<thead>\n\t<tr>\n\t<th>sala</th>\n\t<th>film</th>\n\t<th>disponibilità</th>\n\t<th>inizio</th>\n\t</tr>\n\t</thead>\n\t<tbody>");
+                    for (Iterator iter = arrayList.iterator(); iter.hasNext();) {
+                        ProiezioneGiornaliera element = (ProiezioneGiornaliera) iter.next();
+                        out.println("<tr>");
+                                out.println("<td>"+element.getSala()+"</td>");
+                                out.println("<td>"+element.getTitolo()+"</td>");
+                                out.println("<td>"+element.getDisponibilita()+"</td>");
+                                out.println("<td>"+element.getOrario()+"</td>");
+                         out.println("</tr>");
+                    }
+                    out.println("</tbody></table>");
                 }
-                out.println("</tbody></table>");
+                else {
+                    out.println("Non ci sono proiezioni");
+                }
                 %>
          <a href="index.jsp">Back</a>
     </body>

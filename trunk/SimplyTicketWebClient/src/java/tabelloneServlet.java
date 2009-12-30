@@ -37,14 +37,12 @@ public class tabelloneServlet extends HttpServlet {
 
     private ControllerUtenza controllerUtenza;
     private String rmi_host;
-    private String error_page;
 
     @Override
     public void init(ServletConfig config) throws ServletException {
         super.init(config);
         ServletContext application = config.getServletContext();
         rmi_host=config.getInitParameter("rmiregistry_host");
-        error_page=application.getInitParameter("error_page");
         if(rmi_host==null){rmi_host="127.0.0.1";}
         try {
             controllerUtenza = (ControllerUtenza) Naming.lookup("//"+rmi_host+"/controllerUtenza");
@@ -73,7 +71,7 @@ public class tabelloneServlet extends HttpServlet {
                     listaProiezioni = controllerUtenza.leggi_info_Proiezioni();
                 }
                 catch(Exception e) {
-                    this.forward(this.error_page, request, response);
+                    throw new ServletException("Errore nel fetching delle proiezioni", e);
                 }
                 CollezioneArrayList proiezioniToken=new CollezioneArrayList();
                 GregorianCalendar dataAttuale=new GregorianCalendar();
@@ -90,7 +88,7 @@ public class tabelloneServlet extends HttpServlet {
                       pro = (Proiezione) listaProiezioni.getIndex(i);
                     }
                     catch (Exception e) {
-                       this.forward(this.error_page, request, response);
+                       throw new ServletException("Errore nella gestione delle proiezioni", e);
                     }
                     dataProiezione=(GregorianCalendar)pro.getDataOraInizio().clone();
                     if(!dataProiezione.after(dataAttuale)){
@@ -107,7 +105,7 @@ public class tabelloneServlet extends HttpServlet {
                           film = ((Film) (listaFilm.getIndex(0)));
                         }
                         catch (Exception e) {
-                           this.forward(this.error_page, request, response);
+                           throw new ServletException("Errore nella gestione dei dati relativi al film in proiezione "+pro.getID(), e);
                         }
                         Sala sala=null;
                         Collezione listaSala = null;
@@ -118,7 +116,7 @@ public class tabelloneServlet extends HttpServlet {
                           sala = (Sala) listaSala.getIndex(0);
                         }
                         catch (Exception e) {
-                          this.forward(this.error_page, request, response);
+                          throw new ServletException("Errore nella gestione dei dati relativi alla sala per la proiezione "+pro.getIDSala(), e);
                         }                     
 
                         //calcola per la proiezione il numero di posti disponibili

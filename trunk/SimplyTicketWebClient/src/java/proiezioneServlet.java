@@ -5,16 +5,13 @@
 
 
 import data_layer.Collezione;
-import data_layer.Proiezione;
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.net.MalformedURLException;
 import java.rmi.Naming;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Iterator;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.servlet.RequestDispatcher;
@@ -35,14 +32,11 @@ public class proiezioneServlet extends HttpServlet {
     
     private ControllerBiglietteria controllerBiglietteria;
     private String rmi_host;
-    private String error_page;
 
     @Override
     public void init(ServletConfig config) throws ServletException {
         super.init(config);
-        ServletContext application = config.getServletContext();
         rmi_host=config.getInitParameter("rmiregistry_host");
-        error_page=application.getInitParameter("error_page");
         if(rmi_host==null){rmi_host="127.0.0.1";}
         try {
             controllerBiglietteria = (ControllerBiglietteria) Naming.lookup("//"+rmi_host+"/controllerBiglietteria");

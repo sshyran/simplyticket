@@ -6,12 +6,10 @@
 
 import data_layer.Collezione;
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.net.MalformedURLException;
 import java.rmi.Naming;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
-import java.rmi.ServerError;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.servlet.RequestDispatcher;
@@ -62,11 +60,26 @@ public class prenotaPosti extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException {
         HttpSession mySession=request.getSession();
-        int IDAddetto=Integer.parseInt((String)mySession.getAttribute(getServletContext().getInitParameter("loggedSession")));
+        int IDAddetto=0;
+        if (mySession.getAttribute(getServletContext().getInitParameter("loggedSession"))==null)
+            throw new ServletException("Login non effettuato");
+        try {
+            IDAddetto=Integer.parseInt((String)mySession.getAttribute(getServletContext().getInitParameter("loggedSession")));
+        }
+        catch (NumberFormatException e) {
+            throw new ServletException("Addetto non valido",e);
+        }
         String[] prenotazione=request.getParameterValues("prenota");
         String[] rimborso=request.getParameterValues("rimborso");
-        double intero=Double.parseDouble(request.getParameter("txtCostoIntero"));
-        double ridotto=Double.parseDouble(request.getParameter("txtCostoRidotto"));
+        double intero;
+        double ridotto;
+        try {
+            intero=Double.parseDouble(request.getParameter("txtCostoIntero"));
+            ridotto=Double.parseDouble(request.getParameter("txtCostoRidotto"));
+        }
+        catch (NumberFormatException e) {
+            throw new ServletException("Prezzi non validi");
+        }
         String interoFlag=request.getParameter("intero");
         String proiezione=null;
         int posto,fila;

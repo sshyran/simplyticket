@@ -68,7 +68,7 @@ public class loginServlet extends HttpServlet {
         if ((user==null || pass==null)||(user.equals("") || pass.equals(""))) {
             throw new ServletException("Parametri non corretti");
         }
-        int id=0;
+        int id=-1;
             id=controllerLogin.verifica(true, user, pass);
 
         if(id>-1) {

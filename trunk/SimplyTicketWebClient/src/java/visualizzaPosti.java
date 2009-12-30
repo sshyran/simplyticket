@@ -31,7 +31,6 @@ public class visualizzaPosti extends HttpServlet {
 
     private ControllerBiglietteria controllerBiglietteria;
     private String rmi_host;
-    private String error_page;
     private Collezione listaPoltrone;
     private int lunghezzaFila;
     private int numeroFile;
@@ -119,13 +118,6 @@ public class visualizzaPosti extends HttpServlet {
             catch (Exception e) {
               throw new ServletException("Error Constructiong \"Posto\" Object", e);
             }
-            
-            /*if (j<lunghezzaFila/2) {
-              pnlSx.add(oggettoPoltrona);
-            }
-            else {
-              pnlDx.add(oggettoPoltrona);
-            }*/
           }
         }
         request.setAttribute("posti", result);

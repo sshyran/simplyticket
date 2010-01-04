@@ -81,21 +81,24 @@ public class prenotaPosti extends HttpServlet {
             throw new ServletException("Prezzi non validi");
         }
         String interoFlag=request.getParameter("intero");
-        String proiezione=null;
+        String proiezione = request.getParameter("idProiezione");
+        String operazione = request.getParameter("prenota");
+        String sceltaFila=request.getParameter("sceltaFila");
+        String sceltaPosto=request.getParameter("sceltaPosto");
+        if (proiezione==null || proiezione.equals("")) {
+            throw new ServletException("Proiez non valida"+proiezione+"xx"+operazione+"xx"+sceltaFila);
+        }
         int posto,fila;
-        if (prenotazione!=null) {
-            for (int i = 0; i < prenotazione.length; i++) {
-                String string = prenotazione[i];
-                //element.getIDProiezione()+element.getIDFila()+element.getID()
-                try {
-                    posto=Integer.parseInt(string.substring(7));
-                    fila=Integer.parseInt(string.substring(5,7));
-                }
-                catch(NumberFormatException e) {
-                    throw new ServletException("Parametri della prenotazione non corretti", e);
-                }
-                proiezione=string.substring(0,5);
-                if (posto>0 && fila>0) {
+        
+        try {
+            posto=Integer.parseInt(sceltaPosto);
+            fila=Integer.parseInt(sceltaFila);
+        }
+        catch(NumberFormatException e) {
+            throw new ServletException("Parametri della prenotazione non corretti", e);
+        }
+        if (operazione!=null && proiezione.equalsIgnoreCase("Prenota")) {
+              if (posto>0 && fila>0) {
                     Collezione postiRitornati=null;
                     String[] postoSuCuiLavorare=null;
                     try {
@@ -107,7 +110,6 @@ public class prenotaPosti extends HttpServlet {
                     }
                     if (postoSuCuiLavorare[2].equals("TRUE")) {
                         //JOptionPane.showMessageDialog(null,"            PostoOccupato","Errore",JOptionPane.ERROR_MESSAGE);
-                        continue;
                     }
                     else {
 
@@ -128,52 +130,39 @@ public class prenotaPosti extends HttpServlet {
                 else {
                     throw new ServletException("Non hai selezionato alcun posto");
                 }
-            }
         }
-        if (rimborso!=null) {
-            for (int i = 0; i < rimborso.length; i++) {
-                String string = rimborso[i];
-                //element.getIDProiezione()+element.getIDFila()+element.getID()
-                try {
-                    posto=Integer.parseInt(string.substring(7));
-                    fila=Integer.parseInt(string.substring(5,7));
-                }
-                catch(NumberFormatException e) {
-                    throw new ServletException("Parametri della prenotazione non corretti", e);
-                }
-                proiezione=string.substring(0,5);
+        else {
+            if (operazione!=null && operazione.equalsIgnoreCase("Rimborso")) {
                 if (posto>0 && fila>0) {
                     Collezione postiRitornati=null;
                     String[] postoSuCuiLavorare=null;
                     try {
-                      postiRitornati=controllerBiglietteria.leggiPosti(proiezione,fila,posto);
-                      postoSuCuiLavorare = ( (String[]) postiRitornati.getIndex(0));
+                        postiRitornati=controllerBiglietteria.leggiPosti(proiezione,fila,posto);
+                        postoSuCuiLavorare = ( (String[]) postiRitornati.getIndex(0));
                     }
                     catch (Exception e1) {
-                      throw new ServletException("Errore nella comunicazione con il server SimplyTicket", e1);
+                        throw new ServletException("Errore nella comunicazione con il server SimplyTicket", e1);
                     }
                     if (postoSuCuiLavorare[2].equals("FALSE")) {
-                        //JOptionPane.showMessageDialog(null,"            PostoOccupato","Errore",JOptionPane.ERROR_MESSAGE);
-                        continue;
+                                //JOptionPane.showMessageDialog(null,"            PostoOccupato","Errore",JOptionPane.ERROR_MESSAGE);
                     }
                     else {
-
-                      if (interoFlag!=null) {
-                        ridotto=0;
-                      }
-                      else {
-                        intero=0;
-                      }
-                      try {
-                        controllerBiglietteria.annullaTicket(proiezione, posto, fila, "no");
-                      }
-                      catch (Exception ex) {
-                          throw new ServletException("Errore Emissione Ticket", ex);
-                      }
+                        if (interoFlag!=null) {
+                            ridotto=0;
+                        }
+                        else {
+                            intero=0;
+                        }
+                        try {
+                            controllerBiglietteria.annullaTicket(proiezione, posto, fila, "no");
+                        }
+                        catch (Exception ex) {
+                            throw new ServletException("Errore Emissione Ticket", ex);
+                        }
                     }
                 }
                 else {
-                    throw new ServletException("Non hai selezionato alcun posto");
+                   throw new ServletException("Non hai selezionato alcun posto");
                 }
             }
         }

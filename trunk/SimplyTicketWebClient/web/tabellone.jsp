@@ -1,46 +1,48 @@
-<%-- 
-    Document   : tabellone
-    Created on : 25-dic-2009, 16.46.50
-    Author     : William The Bloody
---%>
-
 <%@page session="false" %>
 <%@ page language="java" import="java.util.*" %>
 <%@ page language="java" import="web.ProiezioneGiornaliera" %>
-
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
-   "http://www.w3.org/TR/html4/loose.dtd">
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+	<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<title>Simply Ticket - Tabellone</title>
+	<link href="simply.css" rel="stylesheet" type="text/css" />
+	</head>
 
-<html>
-    <head>
-        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>Simply Ticket - Tabellone</title>
-    </head>
-    <body>
-        <%
-            //int limit=((Integer)(request.getAttribute("NUM_PG"))).intValue();
-            ArrayList arrayList = (ArrayList)request.getAttribute("PG");
-        %>
-        <h1>Proiezioni!</h1>    
-                <%
-                if (arrayList!=null && arrayList.size()>0) {
-                    out.println("<table border=\"1\">\n\t<thead>\n\t<tr>\n\t<th>sala</th>\n\t<th>film</th>\n\t<th>disponibilità</th>\n\t<th>inizio</th>\n\t</tr>\n\t</thead>\n\t<tbody>");
-                    for (Iterator iter = arrayList.iterator(); iter.hasNext();) {
-                        ProiezioneGiornaliera element = (ProiezioneGiornaliera) iter.next();
-                        out.println("<tr>");
-                                out.println("<td>"+element.getSala()+"</td>");
-                                out.println("<td>"+element.getTitolo()+"</td>");
-                                out.println("<td>"+element.getDisponibilita()+"</td>");
-                                out.println("<td>"+element.getOrario()+"</td>");
-                         out.println("</tr>");
+	<body class="oneColLiqCtrHdr">
+		<div id="container">
+		  <div id="header">
+		    <h1>Proiezioni Attuali</h1>
+		  <!-- end #header --></div>
+		  <div id="mainContent">
+			<%
+                //int limit=((Integer)(request.getAttribute("NUM_PG"))).intValue();
+                ArrayList arrayList = (ArrayList)request.getAttribute("PG");
+                    if (arrayList!=null && arrayList.size()>0) {
+                        out.println("<table id=\"tabellone\" align=\"center\">\n\t<thead>\n\t<tr>\n\t<th>Sala</th>\n\t<th>Titolo Film</th>\n\t<th>Disponibilità</th>\n\t<th>Inizio</th>\n\t</tr>\n\t</thead>\n\t<tbody>");
+                        for (Iterator iter = arrayList.iterator(); iter.hasNext();) {
+                            ProiezioneGiornaliera element = (ProiezioneGiornaliera) iter.next();
+                            out.println("<tr>");
+                                    out.println("<td>"+element.getSala()+"</td>");
+                                    out.println("<td>"+element.getTitolo()+"</td>");
+                                    out.println("<td>"+element.getDisponibilita()+"</td>");
+                                    out.println("<td>"+element.getOrario()+"</td>");
+                             out.println("</tr>");
+                        }
+                        out.println("</tbody></table>");
                     }
-                    out.println("</tbody></table>");
-                }
-                else {
-                    out.println("Non ci sono proiezioni");
-                }
-                %>
-         <a href="index.jsp">Back</a>
-    </body>
+                    else {
+                        out.println("<h3>Non ci sono proiezioni</h3>");
+                    }
+                    %>
+
+			<!-- end #mainContent --></div>
+		  <div id="footer">
+          	<p>
+		    	<a href="index.jsp"><input type="button" value="Indietro"/></a>
+            </p> 
+		  <!-- end #footer --></div>
+		<!-- end #container --></div>
+	</body>
 </html>

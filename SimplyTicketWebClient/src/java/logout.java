@@ -28,14 +28,14 @@ public class logout extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException {
         HttpSession mySession=request.getSession();
-        String sessionValue=(String)mySession.getAttribute(getServletContext().getInitParameter("loggedSession"));
+        /*String sessionValue=(String)mySession.getAttribute(getServletContext().getInitParameter("loggedSession"));
         if (sessionValue==null) {
             throw new ServletException("Login non effettuato");
         }
-        else {
+        else {*/
             mySession.removeAttribute(getServletContext().getInitParameter("loggedSession"));
             this.forward(getServletContext().getInitParameter("mainPage"), request, response);
-        }
+        // }
     } 
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

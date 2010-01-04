@@ -11,25 +11,56 @@
 
 <html>
     <head>
-        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>Simply Ticket</title>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+        <title>Simply Ticket - Biglietteria</title>
+        <link href="simply.css" rel="stylesheet" type="text/css" />
     </head>
-    <body>
+    
+    <body class="oneColLiqCtrHdr">
+    <div id="container">
+    	<form name="biglietteria">
+        
+        <div id="header">
+        	<h1>Biglietteria</h1>
+        <!-- end #header --></div>
+        
+        <div id="mainContent">
         <%
         HttpSession mySession=request.getSession();
         String sessionValue=(String)mySession.getAttribute(getServletContext().getInitParameter("loggedSession"));
         if (sessionValue==null) {
         %>
-        <a href="login.jsp">login</a><br>
+	        <input type="button" id="bottone" value="Gestione Abbonamenti" disabled="disabled"/><br />
+                <input type="button" id="bottone" value="Gestione Biglietteria" disabled="disabled"/>
+        <!-- end #mainContent --></div>
+
+        <div id="footer">
+        	<p>
+                <input type="button" value="Log Out" disabled="disabled"/>
+                <a href="login.jsp"><input type="button" value="Login"/></a>
+        		
+        <%
+        } else {
+        %>
+                <input type="button" id="bottone" value="Gestione Abbonamenti" disabled="disabled"/><br />
+        	<a href="proiezioneServlet"><input type="button" id="bottone" value="Gestione Biglietteria"/></a>
+        	
+        <!-- end #mainContent --></div>
+        
+              <div id="footer">
+                <p>
+	                <a href="logout"><input type="button" value="Log Out"/></a>
+                    <input type="button" value="Login" disabled="disabled"/>
+                                    
         <%
         }
-        else {
         %>
-        <a href="logout">logout</a><br>
-        <%
-        }
-        %>
-        <a href="info.jsp">Info</a><br>
-        <a href="tabelloneServlet">Tabellone</a><br>
-    </body>
+        			
+                    <a href="tabelloneServlet"><input type="button" value="Tabellone"></a>
+                    <a href="info.jsp"><input type="button" value="Info"/></a>
+                </p>
+              <!-- end #footer --></div>
+			</form>
+		<!-- end #container --></div>
+	</body>
 </html>

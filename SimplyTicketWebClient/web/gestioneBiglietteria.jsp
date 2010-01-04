@@ -1,35 +1,32 @@
-<%-- 
-    Document   : gestioneBiglietteria.jsp
-    Created on : 26-dic-2009, 19.01.00
-    Author     : William The Bloody
---%>
 <%@ page language="java" import="java.util.*" %>
 <%@ page language="java" import="web.ProiezioneGiornaliera" %>
-
 <%@page session="true" %>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
-   "http://www.w3.org/TR/html4/loose.dtd">
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+	<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<title>Simply Ticket - Gestione Biglietteria</title>
+	<link href="simply.css" rel="stylesheet" type="text/css" />
+	</head>
 
-<html>
-    <head>
-        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>Simply Ticket - Gestione Biglietteria</title>
-    </head>
-    <body>
-        <h1>Proiezioni!</h1>
-        <%
-        HttpSession mySession=request.getSession();
-        String sessionValue=(String)mySession.getAttribute(getServletContext().getInitParameter("loggedSession"));
-        if (sessionValue==null) {
-            throw new ServletException("Login non effettuato");
-        }
-        ArrayList arrayList = (ArrayList)request.getAttribute("films_availables");
-        %>
-                <%
-                if (arrayList!=null && arrayList.size()>0) {
+	<body class="oneColLiqCtrHdr">
+		<div id="container">
+		  <div id="header">
+		    <h1>Gestione Biglietteria</h1>
+		  <!-- end #header --></div>
+		  <div id="mainContent">
+                   <%
+            HttpSession mySession=request.getSession();
+            String sessionValue=(String)mySession.getAttribute(getServletContext().getInitParameter("loggedSession"));
+            if (sessionValue==null) {
+                throw new ServletException("Login non effettuato");
+            }
+            ArrayList arrayList = (ArrayList)request.getAttribute("films_availables");
+            %>
+		    <% if (arrayList!=null && arrayList.size()>0) {
                 out.println("<form name=\"visualizzaPosti\" action=\"visualizzaPosti\">");
-                out.println("<table border=\"1\">\n\t<thead>\n\t<tr>\n\t<th></th>\n\t<th>Sala</th>\n\t<th>Film</th>\n\t<th>Disponibilità</th>\n\t</tr>\n\t</thead>\n\t<tbody>");
+                out.println("<table id=\"tabellone\" align=\"center\">\n\t<thead>\n\t<tr>\n\t<th></th>\n\t<th>Sala</th>\n\t<th>Titolo Film</th>\n\t<th>Disponibilità</th>\n\t</tr>\n\t</thead>\n\t<tbody>");
                 
                 for (Iterator iter = arrayList.iterator(); iter.hasNext();) {
                     ProiezioneGiornaliera element = (ProiezioneGiornaliera) iter.next();
@@ -40,12 +37,28 @@
                     out.println("<td>"+element.getDisponibilita()+"</td>");
                     out.println("</tr>");
                 }
-                out.println("</tbody></table><input type=\"submit\" value=\"invio\" name=\"invio\" /></form>");
+                out.println("</tbody></table>");
                 }
                 else {
-                out.println("Non ci sono proiezioni o hai sbagliato i parametri");
+                    if(arrayList==null){
+                    throw new ServletException("Parametri non corretti");
+                    }
+                out.println("<h3>Nessuna proiezione</h3>");
                 }
                 %>
-                <a href="index.jsp">Back</a>
-    </body>
+			<!-- end #mainContent --></div>
+          <div id="footer">
+            <p>
+              <a href="index.jsp"><input type="button" value="<< Indietro"/></a>
+            <% if (arrayList!=null && arrayList.size()>0) {
+                out.println("<input type=\"submit\" value=\"invio\" name=\"invio\" />");
+                out.println("</form>");
+                }else{
+                out.println("<input type=\"submit\" value=\"invio\" name=\"invio\" disabled/>");
+                        }%>
+            </p>
+		  <!-- end #footer --></div>
+                
+		<!-- end #container --></div>
+	</body>
 </html>

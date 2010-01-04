@@ -74,7 +74,8 @@ public class loginServlet extends HttpServlet {
         if(id>-1) {
             //out.println("<br>Utente trovato<br>");
             mySession.setAttribute(getServletContext().getInitParameter("loggedSession"), ""+id);
-            this.forward(getServletContext().getInitParameter("loggedMainPage"), request, response);
+            this.forward(getServletContext().getInitParameter("mainPage"), request, response);
+
         }
         else {
             throw new ServletException("Login failed");

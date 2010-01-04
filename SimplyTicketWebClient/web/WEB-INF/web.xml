@@ -6,11 +6,6 @@
         <param-value>logged</param-value>
     </context-param>
     <context-param>
-        <description>filename for the mainpage</description>
-        <param-name>loggedMainPage</param-name>
-        <param-value>mainPage.jsp</param-value>
-    </context-param>
-    <context-param>
         <description>MainPage</description>
         <param-name>mainPage</param-name>
         <param-value>index.jsp</param-value>
@@ -23,7 +18,7 @@
             <param-name>rmiregistry_host</param-name>
             <param-value>127.0.0.1</param-value>
         </init-param>
-        </servlet>
+    </servlet>
     <servlet>
         <servlet-name>tabelloneServlet</servlet-name>
         <servlet-class>tabelloneServlet</servlet-class>
@@ -75,7 +70,7 @@
     </session-config>
     <welcome-file-list>
         <welcome-file>index.jsp</welcome-file>
-        </welcome-file-list>
+    </welcome-file-list>
     <error-page>
         <error-code>500</error-code>
         <location>/WEB-INF/error.jsp</location>
@@ -84,4 +79,4 @@
         <exception-type>java.lang.Throwable</exception-type>
         <location>/WEB-INF/error.jsp</location>
     </error-page>
-    </web-app>
+</web-app>

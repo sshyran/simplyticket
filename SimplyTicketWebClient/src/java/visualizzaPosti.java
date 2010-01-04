@@ -68,21 +68,28 @@ public class visualizzaPosti extends HttpServlet {
             throw new ServletException("Login non effettuato");
         }
         String IDProiezione=request.getParameter("film");
-        if (IDProiezione==null) {
+        if (IDProiezione==null || IDProiezione.equals("")) {
             IDProiezione=(String)request.getAttribute("film");
-            if (IDProiezione==null) {
+            if (IDProiezione==null || IDProiezione.equals("")) {
                 throw new ServletException("Proiezione non valida");
             }
         }
         listaPoltrone = controllerBiglietteria.leggiPosti(IDProiezione,-1,-1);
         String[] poltrona;
-        try {
+         try {
             poltrona = ((String[]) listaPoltrone.getIndex(0));
         } catch (Exception ex) {
             //Logger.getLogger(visualizzaPosti.class.getName()).log(Level.SEVERE, null, ex);
             throw new ServletException("Error retrieving available chair", ex);
         }
-        int IDFila=Integer.parseInt(poltrona[1]);
+        int IDFila;
+        try {
+            IDFila=Integer.parseInt(poltrona[1]);
+        }
+            catch (Exception ex) {
+            //Logger.getLogger(visualizzaPosti.class.getName()).log(Level.SEVERE, null, ex);
+            throw new ServletException("Error retrieving available chair", ex);
+        }
         boolean finito=false;
         lunghezzaFila=0;
         for(int i=0;!finito;i++){

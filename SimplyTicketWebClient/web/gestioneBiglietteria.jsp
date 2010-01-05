@@ -30,6 +30,7 @@
                 
                 for (Iterator iter = arrayList.iterator(); iter.hasNext();) {
                     ProiezioneGiornaliera element = (ProiezioneGiornaliera) iter.next();
+                    out.println("<input type=\"hidden\" name=\"locandina"+element.getId()+"\" value=\""+element.getLocandina()+"\" />");
                     out.println("<tr>");
                     out.println("<td><input type=\"radio\" name=\"film\" value=\""+element.getId()+"\" /></td>");
                     out.println("<td>"+element.getSala()+"</td>");

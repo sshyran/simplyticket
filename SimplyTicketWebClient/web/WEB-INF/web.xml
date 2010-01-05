@@ -10,6 +10,11 @@
         <param-name>mainPage</param-name>
         <param-value>index.jsp</param-value>
     </context-param>
+    <context-param>
+        <description>default image for film's poster</description>
+        <param-name>defaultImage</param-name>
+        <param-value>imageNotFound.png</param-value>
+    </context-param>
     <servlet>
         <servlet-name>loginServlet</servlet-name>
         <servlet-class>loginServlet</servlet-class>

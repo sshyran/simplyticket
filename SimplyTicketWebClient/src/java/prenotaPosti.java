@@ -85,6 +85,8 @@ public class prenotaPosti extends HttpServlet {
         String operazione = request.getParameter("prenota");
         String sceltaFila=request.getParameter("sceltaFila");
         String sceltaPosto=request.getParameter("sceltaPosto");
+        operazione.trim();
+        proiezione=proiezione.trim();
         if (proiezione==null || proiezione.equals("")) {
             throw new ServletException("Proiez non valida"+proiezione+"xx"+operazione+"xx"+sceltaFila);
         }
@@ -97,7 +99,7 @@ public class prenotaPosti extends HttpServlet {
         catch(NumberFormatException e) {
             throw new ServletException("Parametri della prenotazione non corretti", e);
         }
-        if (operazione!=null && proiezione.equalsIgnoreCase("Prenota")) {
+        if (operazione!=null && operazione.equalsIgnoreCase("Prenota")) {
               if (posto>0 && fila>0) {
                     Collezione postiRitornati=null;
                     String[] postoSuCuiLavorare=null;
@@ -132,7 +134,7 @@ public class prenotaPosti extends HttpServlet {
                 }
         }
         else {
-            if (operazione!=null && operazione.equalsIgnoreCase("Rimborso")) {
+            if (operazione!=null && operazione.equalsIgnoreCase("Rimborsa")) {
                 if (posto>0 && fila>0) {
                     Collezione postiRitornati=null;
                     String[] postoSuCuiLavorare=null;
@@ -165,6 +167,13 @@ public class prenotaPosti extends HttpServlet {
                    throw new ServletException("Non hai selezionato alcun posto");
                 }
             }
+        }
+        String locandinaPath=request.getParameter("locandina"+proiezione);
+        if (locandinaPath==null || locandinaPath.equals("")) {
+            throw new ServletException("Locandina non pervenuta");
+        }
+        else {
+            request.setAttribute("locandina"+proiezione, locandinaPath);
         }
         request.setAttribute("film", proiezione);
         this.forward("visualizzaPosti", request, response);

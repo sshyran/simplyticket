@@ -73,6 +73,8 @@ public class visualizzaPosti extends HttpServlet {
             if (IDProiezione==null || IDProiezione.equals("")) {
                 throw new ServletException("Proiezione non valida");
             }
+            IDProiezione=IDProiezione.trim();
+            //IDProiezione.replaceAll("\r\n", "");
         }
         listaPoltrone = controllerBiglietteria.leggiPosti(IDProiezione,-1,-1);
         String[] poltrona;
@@ -127,6 +129,30 @@ public class visualizzaPosti extends HttpServlet {
             }
           }
         }
+        String locandinaPath=request.getParameter("locandina"+IDProiezione);
+        if (locandinaPath==null || locandinaPath.equals("")) {
+            locandinaPath=(String)request.getAttribute("locandina"+IDProiezione);
+            if (locandinaPath==null || locandinaPath.equals("")) {
+                //throw new ServletException("Locandina non pervenuta");
+                locandinaPath=getServletContext().getInitParameter("defaultImage");
+            }
+            else {
+                if (!(new java.io.File(locandinaPath).exists())) {
+                    locandinaPath=getServletContext().getInitParameter("defaultImage");
+                }
+            }
+            //IDProiezione.replaceAll("\r\n", "");
+        }
+        else {
+            if (!(new java.io.File(locandinaPath).exists())) {
+                locandinaPath=getServletContext().getInitParameter("defaultImage");
+            }
+            else {
+                locandinaPath=locandinaPath.substring(locandinaPath.lastIndexOf("\\")+1, locandinaPath.length());
+            }
+        }
+        locandinaPath=locandinaPath.trim();
+        request.setAttribute("locandina"+IDProiezione, locandinaPath);
         request.setAttribute("posti", result);
         this.forward("visualizzaPosti.jsp", request, response);
     } 

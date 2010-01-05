@@ -44,6 +44,10 @@ public class tabelloneServlet extends HttpServlet {
         ServletContext application = config.getServletContext();
         rmi_host=config.getInitParameter("rmiregistry_host");
         if(rmi_host==null){rmi_host="127.0.0.1";}
+        this.initialize();
+    }
+
+    private void initialize() {
         try {
             controllerUtenza = (ControllerUtenza) Naming.lookup("//"+rmi_host+"/controllerUtenza");
         } catch (NotBoundException ex) {
@@ -64,10 +68,17 @@ public class tabelloneServlet extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException {
+                if (controllerUtenza==null) {
+                    this.initialize();
+                }
                 //inserisci codice lavoro
                 Collection result=new ArrayList();
                 Collezione listaProiezioni=null;
                 try{
+                    listaProiezioni = controllerUtenza.leggi_info_Proiezioni();
+                }
+                catch (java.rmi.ConnectException e) {
+                    this.initialize();
                     listaProiezioni = controllerUtenza.leggi_info_Proiezioni();
                 }
                 catch(Exception e) {
@@ -104,6 +115,15 @@ public class tabelloneServlet extends HttpServlet {
                           listaFilm = controllerUtenza.leggi_info_Film(pro.getIDFilm());
                           film = ((Film) (listaFilm.getIndex(0)));
                         }
+                        catch (java.rmi.ConnectException e) {
+                            this.initialize();
+                            listaFilm = controllerUtenza.leggi_info_Film(pro.getIDFilm());
+                            try {
+                                film = ((Film) (listaFilm.getIndex(0)));
+                            } catch (Exception ex) {
+                                throw new ServletException("Errore nella gestione dei dati relativi al film in proiezione "+pro.getID(), e);
+                            }
+                        }
                         catch (Exception e) {
                            throw new ServletException("Errore nella gestione dei dati relativi al film in proiezione "+pro.getID(), e);
                         }
@@ -114,6 +134,15 @@ public class tabelloneServlet extends HttpServlet {
                         try {
                           listaSala = controllerUtenza.leggi_info_Sala(pro.getIDSala());
                           sala = (Sala) listaSala.getIndex(0);
+                        }
+                        catch (java.rmi.ConnectException e) {
+                            this.initialize();
+                            listaSala = controllerUtenza.leggi_info_Sala(pro.getIDSala());
+                            try {
+                                sala = (Sala) listaSala.getIndex(0);
+                            } catch (Exception ex) {
+                                throw new ServletException("Errore nella gestione dei dati relativi alla sala per la proiezione "+pro.getIDSala(), e);
+                            }
                         }
                         catch (Exception e) {
                           throw new ServletException("Errore nella gestione dei dati relativi alla sala per la proiezione "+pro.getIDSala(), e);

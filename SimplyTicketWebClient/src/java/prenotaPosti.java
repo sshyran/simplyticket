@@ -39,6 +39,10 @@ public class prenotaPosti extends HttpServlet {
         //error_page=application.getInitParameter("error_page");
         rmi_host=config.getInitParameter("rmiregistry_host");
         if(rmi_host==null){rmi_host="127.0.0.1";}
+        this.initialize();
+    }
+
+    private void initialize() {
         try {
             controllerBiglietteria = (ControllerBiglietteria) Naming.lookup("//"+rmi_host+"/controllerBiglietteria");
         } catch (NotBoundException ex) {
@@ -59,6 +63,9 @@ public class prenotaPosti extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException {
+        if (controllerBiglietteria==null) {
+            this.initialize();
+        }
         HttpSession mySession=request.getSession();
         int IDAddetto=0;
         if (mySession.getAttribute(getServletContext().getInitParameter("loggedSession"))==null)
@@ -107,6 +114,15 @@ public class prenotaPosti extends HttpServlet {
                       postiRitornati=controllerBiglietteria.leggiPosti(proiezione,fila,posto);
                       postoSuCuiLavorare = ( (String[]) postiRitornati.getIndex(0));
                     }
+                    catch (java.rmi.ConnectException e) {
+                        this.initialize();
+                        try {
+                            postiRitornati=controllerBiglietteria.leggiPosti(proiezione,fila,posto);
+                            postoSuCuiLavorare = ( (String[]) postiRitornati.getIndex(0));
+                        } catch (Exception ex) {
+                            throw new ServletException("Errore nella comunicazione con il server SimplyTicket", ex);
+                        }
+                    }
                     catch (Exception e1) {
                       throw new ServletException("Errore nella comunicazione con il server SimplyTicket", e1);
                     }
@@ -123,6 +139,14 @@ public class prenotaPosti extends HttpServlet {
                       }
                       try {
                         controllerBiglietteria.emettiTicket(proiezione, fila, posto, "no",intero,ridotto,IDAddetto);
+                      }
+                      catch (java.rmi.ConnectException e) {
+                          this.initialize();
+                          try {
+                              controllerBiglietteria.emettiTicket(proiezione, fila, posto, "no",intero,ridotto,IDAddetto);
+                          } catch (Exception ex) {
+                              throw new ServletException("Errore Emissione Ticket", ex);
+                          }
                       }
                       catch (Exception ex) {
                           throw new ServletException("Errore Emissione Ticket", ex);
@@ -142,6 +166,15 @@ public class prenotaPosti extends HttpServlet {
                         postiRitornati=controllerBiglietteria.leggiPosti(proiezione,fila,posto);
                         postoSuCuiLavorare = ( (String[]) postiRitornati.getIndex(0));
                     }
+                    catch (java.rmi.ConnectException e) {
+                        this.initialize();
+                        try {
+                            postiRitornati=controllerBiglietteria.leggiPosti(proiezione,fila,posto);
+                            postoSuCuiLavorare = ( (String[]) postiRitornati.getIndex(0));
+                        } catch (Exception ex) {
+                            throw new ServletException("Errore nella comunicazione con il server SimplyTicket", ex);
+                        }
+                    }
                     catch (Exception e1) {
                         throw new ServletException("Errore nella comunicazione con il server SimplyTicket", e1);
                     }
@@ -157,6 +190,14 @@ public class prenotaPosti extends HttpServlet {
                         }
                         try {
                             controllerBiglietteria.annullaTicket(proiezione, posto, fila, "no");
+                        }
+                        catch (java.rmi.ConnectException e) {
+                            this.initialize();
+                            try {
+                                controllerBiglietteria.annullaTicket(proiezione, posto, fila, "no");
+                            } catch (Exception ex) {
+                                throw new ServletException("Errore Emissione Ticket", ex);
+                            }
                         }
                         catch (Exception ex) {
                             throw new ServletException("Errore Emissione Ticket", ex);

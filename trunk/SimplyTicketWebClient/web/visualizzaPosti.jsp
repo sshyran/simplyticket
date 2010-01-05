@@ -26,17 +26,20 @@
 			ArrayList arrayList = (ArrayList)request.getAttribute("posti");
                         String idProiezione = null;
 				if (arrayList!=null && arrayList.size()>0) {
+                                    Posto element2 = (Posto) (arrayList.get(0));
+                                    idProiezione = element2.getIDProiezione();
                                     out.println("<form name=\"prenotaPosti\" action=\"prenotaPosti\">");
                     %>
 
 
                     <div id="barrasx">
                         <div id="locandina">
-                            <a href=""> <img src="img/1823.jpg"></img></a><br /><br /><!-- getLocandina from Film -->
+                            <a href=""> <img src="img/<%= request.getAttribute("locandina"+idProiezione) %>"></img></a><br /><br /><!-- getLocandina from Film -->
                         </div>
                     <%
-                    out.println("<table id=\"acquisto\"><tr><td>Intero:</td><td><input type=\"text\" name=\"txtCostoIntero\" value=\"5.0\" size=\"4\"/></td><td><input type=\"radio\" value=\"intero\" checked /></td></tr>");
-                    out.println("<tr><td>Ridotto:</td><td><input type=\"text\" name=\"txtCostoRidotto\" value=\"3.5\" size=\"4\"/></td><td><input type=\"radio\" value=\"ridotto\" /></td></tr>");
+                    out.print("<input type=\"hidden\" name=\"locandina"+idProiezione+"\" value=\""+request.getAttribute("locandina"+idProiezione)+"\" />");
+                    out.println("<table id=\"acquisto\"><tr><td>Intero:</td><td><input type=\"text\" name=\"txtCostoIntero\" value=\"5.0\" size=\"4\"/></td><td><input type=\"radio\" name=\"intero\" checked /></td></tr>");
+                    out.println("<tr><td>Ridotto:</td><td><input type=\"text\" name=\"txtCostoRidotto\" value=\"3.5\" size=\"4\"/></td><td><input type=\"radio\" name=\"ridotto\" /></td></tr>");
                     out.println("<tr><td>Fila:</td><td></td><td><select name=\"sceltaFila\">)");
                     
 
@@ -51,8 +54,6 @@
                     out.println("</select></td></tr>");
                     out.println("<tr><td>Posto:</td><td></td><td><select name=\"sceltaPosto\">");
                     int id_posto = 1;
-                    Posto element2 = (Posto) (arrayList.get(0));
-                    idProiezione = element2.getIDProiezione();
                     for (Iterator iter = arrayList.iterator(); iter.hasNext();) {
 			Posto element = (Posto) iter.next();
                         while(id_posto==element.getID()){

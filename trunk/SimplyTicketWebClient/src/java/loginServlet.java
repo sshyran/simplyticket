@@ -37,6 +37,10 @@ public class loginServlet extends HttpServlet {
         rmi_host=config.getInitParameter("rmiregistry_host");
         error_page=application.getInitParameter("error_page");
         if(rmi_host==null){rmi_host="127.0.0.1";}
+        this.initialize();
+    }
+
+    private void initialize() {
         try {
             controllerLogin = (ControllerLogin) Naming.lookup("//"+rmi_host+"/controllerLogin");
         } catch (NotBoundException ex) {
@@ -58,6 +62,9 @@ public class loginServlet extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException {
+        if (controllerLogin==null) {
+            this.initialize();
+        }
         HttpSession mySession=request.getSession();
         String sessionValue=(String)mySession.getAttribute(getServletContext().getInitParameter("loggedSession"));
         if (sessionValue!=null) {
@@ -69,8 +76,12 @@ public class loginServlet extends HttpServlet {
             throw new ServletException("Parametri non corretti");
         }
         int id=-1;
-            id=controllerLogin.verifica(true, user, pass);
-
+        try {
+            id = controllerLogin.verifica(true, user, pass);
+        } catch (java.rmi.ConnectException e) {
+            this.initialize();
+            id = controllerLogin.verifica(true, user, pass);
+        }
         if(id>-1) {
             //out.println("<br>Utente trovato<br>");
             mySession.setAttribute(getServletContext().getInitParameter("loggedSession"), ""+id);

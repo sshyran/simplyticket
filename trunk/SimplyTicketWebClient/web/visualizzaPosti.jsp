@@ -73,10 +73,10 @@
 						Posto element = (Posto) iter.next();
                                                 if (num_fila == element.getIDFila()) {
                                                     out.println("<td><div class="+element.getOccupato()+">"+element.getID()+"</div></td>");
-                                                        if (element.getID()==10){
-                                                            out.println("<td style=\"background-color: orange; \">&nbsp&nbsp</td>");
-                                                        }
-                                                    }else{
+                                                    if (element.getID()==10){
+                                                        out.println("<td style=\"background-color: orange; \">&nbsp&nbsp</td>");
+                                                    }
+                                                }else{
                                                     num_fila = element.getIDFila();
                                                     out.println("</tr>\n<tr><td>"+num_fila+"</td><td><div class="+element.getOccupato()+">"+element.getID()+"</div></td>");
                                                 }						

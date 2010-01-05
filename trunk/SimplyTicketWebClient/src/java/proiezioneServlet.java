@@ -16,7 +16,6 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletConfig;
-import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -38,6 +37,10 @@ public class proiezioneServlet extends HttpServlet {
         super.init(config);
         rmi_host=config.getInitParameter("rmiregistry_host");
         if(rmi_host==null){rmi_host="127.0.0.1";}
+        this.initialize();
+    }
+
+    private void initialize() {
         try {
             controllerBiglietteria = (ControllerBiglietteria) Naming.lookup("//"+rmi_host+"/controllerBiglietteria");
         } catch (NotBoundException ex) {
@@ -59,12 +62,21 @@ public class proiezioneServlet extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException {
+        if (controllerBiglietteria==null) {
+            this.initialize();
+        }
         HttpSession mySession=request.getSession();
         String sessionValue=(String)mySession.getAttribute(getServletContext().getInitParameter("loggedSession"));
         if (sessionValue==null) {
             throw new ServletException("Login non effettuato");
         }
-        Collezione listaProiezioni=this.controllerBiglietteria.leggiListaSpettacoli();
+        Collezione listaProiezioni = null;
+        try {
+            listaProiezioni = this.controllerBiglietteria.leggiListaSpettacoli();
+        } catch (java.rmi.ConnectException e) {
+            this.initialize();
+            listaProiezioni = this.controllerBiglietteria.leggiListaSpettacoli();
+        }
         ProiezioneGiornaliera p=null;
         Collection result=new ArrayList();
         for (int i=0;i<listaProiezioni.size();i++) {

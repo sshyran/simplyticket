@@ -17,6 +17,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletConfig;
+import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -42,6 +43,10 @@ public class visualizzaPosti extends HttpServlet {
         //error_page=application.getInitParameter("error_page");
         rmi_host=config.getInitParameter("rmiregistry_host");
         if(rmi_host==null){rmi_host="127.0.0.1";}
+        this.initialize();
+    }
+
+    private void initialize() {
         try {
             controllerBiglietteria = (ControllerBiglietteria) Naming.lookup("//"+rmi_host+"/controllerBiglietteria");
         } catch (NotBoundException ex) {
@@ -62,6 +67,9 @@ public class visualizzaPosti extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException {
+        if (controllerBiglietteria==null) {
+            this.initialize();
+        }
         HttpSession mySession=request.getSession();
         String sessionValue=(String)mySession.getAttribute(getServletContext().getInitParameter("loggedSession"));
         if (sessionValue==null) {
@@ -76,7 +84,13 @@ public class visualizzaPosti extends HttpServlet {
             IDProiezione=IDProiezione.trim();
             //IDProiezione.replaceAll("\r\n", "");
         }
-        listaPoltrone = controllerBiglietteria.leggiPosti(IDProiezione,-1,-1);
+        try {
+            listaPoltrone = controllerBiglietteria.leggiPosti(IDProiezione, -1, -1);
+        }
+        catch (java.rmi.ConnectException e) {
+            this.initialize();
+            listaPoltrone = controllerBiglietteria.leggiPosti(IDProiezione, -1, -1);
+        }
         String[] poltrona;
          try {
             poltrona = ((String[]) listaPoltrone.getIndex(0));
@@ -144,11 +158,10 @@ public class visualizzaPosti extends HttpServlet {
             //IDProiezione.replaceAll("\r\n", "");
         }
         else {
-            if (!(new java.io.File(locandinaPath).exists())) {
+            locandinaPath=locandinaPath.substring(locandinaPath.lastIndexOf("\\")+1, locandinaPath.length());ServletContext context = getServletContext();
+            String realContextPath = context.getRealPath(request.getContextPath());
+            if (!(new java.io.File(realContextPath+"\\..\\img\\"+locandinaPath).exists())) {
                 locandinaPath=getServletContext().getInitParameter("defaultImage");
-            }
-            else {
-                locandinaPath=locandinaPath.substring(locandinaPath.lastIndexOf("\\")+1, locandinaPath.length());
             }
         }
         locandinaPath=locandinaPath.trim();

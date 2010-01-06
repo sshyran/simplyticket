@@ -102,7 +102,7 @@ public class Proiezione implements Serializable{
 
 
   public void setBigliettiVenduti(int biglietti) throws Exception{
-    if (biglietti>0)
+    if (biglietti>=0)
       this.BigliettiVenduti=biglietti;
     else
       throw new Exception("Nuemro di biglietti venduti non valido");

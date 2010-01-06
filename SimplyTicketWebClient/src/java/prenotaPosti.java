@@ -87,7 +87,11 @@ public class prenotaPosti extends HttpServlet {
         catch (NumberFormatException e) {
             throw new ServletException("Prezzi non validi");
         }
-        String interoFlag=request.getParameter("intero");
+        //name=\"tipo_biglietto\" value=\"intero\"
+        String tipoBiglietto=request.getParameter("tipo_biglietto");
+        if (tipoBiglietto==null || tipoBiglietto.equals("")) {
+            throw new ServletException("Tipo biglietto non selezionato");
+        }
         String proiezione = request.getParameter("idProiezione");
         String operazione = request.getParameter("prenota");
         String sceltaFila=request.getParameter("sceltaFila");
@@ -131,7 +135,7 @@ public class prenotaPosti extends HttpServlet {
                     }
                     else {
 
-                      if (interoFlag!=null) {
+                      if (tipoBiglietto.equalsIgnoreCase("intero")) {
                         ridotto=0;
                       }
                       else {
@@ -182,7 +186,7 @@ public class prenotaPosti extends HttpServlet {
                                 //JOptionPane.showMessageDialog(null,"            PostoOccupato","Errore",JOptionPane.ERROR_MESSAGE);
                     }
                     else {
-                        if (interoFlag!=null) {
+                        if (tipoBiglietto.equalsIgnoreCase("intero")) {
                             ridotto=0;
                         }
                         else {

@@ -88,6 +88,11 @@ td > div {
     height:45px;
     border:#0F0 outset 3px;
 }
+
+td > span {
+    color: red;
+    font: small-caps bold 14px "Trebuchet MS", Arial, sans-serif;
+}
 .false{
     background: url(img/poltrona_green.png) bottom no-repeat;
 }

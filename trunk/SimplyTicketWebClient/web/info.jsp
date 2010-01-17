@@ -28,10 +28,10 @@
                          </ul><br />
                          <h3>Maintainers</h3>
                          <ul>
-                             <li>Antonio Celotto</li>
-                             <li>Daniele Coppola</li>
-                             <li>Pasquale Di Giovanni</li>
-                             <li>Raffaele Spinelli</li>
+                             <li>Celotto Antonio</li>
+                             <li>Coppola Daniele</li>
+                             <li>Di Giovanni Pasquale</li>
+                             <li>Spinelli Raffaele</li>
                          </ul><br />&nbsp;
                       </div>
 			<!-- end #mainContent --></div>

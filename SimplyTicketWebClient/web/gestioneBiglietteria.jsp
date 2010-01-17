@@ -52,10 +52,10 @@
             <p>
               <a href="index.jsp"><input type="button" value="<< Indietro"/></a>
             <% if (arrayList!=null && arrayList.size()>0) {
-                out.println("<input type=\"submit\" value=\"invio\" name=\"invio\" />");
+                out.println("<input type=\"submit\" value=\"Invio\" name=\"invio\" />");
                 out.println("</form>");
                 }else{
-                out.println("<input type=\"submit\" value=\"invio\" name=\"invio\" disabled/>");
+                out.println("<input type=\"submit\" value=\"Invio\" name=\"invio\" disabled/>");
                         }%>
             </p>
 		  <!-- end #footer --></div>

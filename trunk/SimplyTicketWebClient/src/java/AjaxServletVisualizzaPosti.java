@@ -6,8 +6,8 @@
 
 import data_layer.Collezione;
 import data_layer.Posto;
-import web.Poltrona;
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.net.MalformedURLException;
 import java.rmi.Naming;
 import java.rmi.NotBoundException;
@@ -15,7 +15,6 @@ import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
@@ -23,13 +22,14 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import web.Poltrona;
 
 /**
  *
- * @author William The Bloody
+ * @author Raffaele
  */
-public class visualizzaPosti extends HttpServlet {
-
+public class AjaxServletVisualizzaPosti extends HttpServlet {
+   
     private ControllerBiglietteria controllerBiglietteria;
     private String rmi_host;
     private Collezione listaPoltrone;
@@ -39,8 +39,6 @@ public class visualizzaPosti extends HttpServlet {
     @Override
     public void init(ServletConfig config) throws ServletException {
         super.init(config);
-        //ServletContext application = config.getServletContext();
-        //error_page=application.getInitParameter("error_page");
         rmi_host=config.getInitParameter("rmiregistry_host");
         if(rmi_host==null){rmi_host="127.0.0.1";}
         this.initialize();
@@ -58,7 +56,7 @@ public class visualizzaPosti extends HttpServlet {
         }
     }
 
-    /** 
+    /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code> methods.
      * @param request servlet request
      * @param response servlet response
@@ -82,8 +80,12 @@ public class visualizzaPosti extends HttpServlet {
                 throw new ServletException("Proiezione non valida");
             }
             IDProiezione=IDProiezione.trim();
-            //IDProiezione.replaceAll("\r\n", "");
         }
+        response.setContentType("text/xml;charset=UTF-8");
+        PrintWriter out = response.getWriter();
+        String xmlResponse="{\"lista\":\n\t[\n";
+        String xmlElement="";
+        boolean not_first = false;
         try {
             listaPoltrone = controllerBiglietteria.leggiPosti(IDProiezione, -1, -1);
         }
@@ -95,7 +97,6 @@ public class visualizzaPosti extends HttpServlet {
          try {
             poltrona = ((String[]) listaPoltrone.getIndex(0));
         } catch (Exception ex) {
-            //Logger.getLogger(visualizzaPosti.class.getName()).log(Level.SEVERE, null, ex);
             throw new ServletException("Error retrieving available chair", ex);
         }
         int IDFila;
@@ -125,8 +126,6 @@ public class visualizzaPosti extends HttpServlet {
         ArrayList result=new ArrayList();
         boolean stato=false;
         for (int i=0;i<numeroFile;i++) {
-          //pnlDx.add(new JLabel(this.generaLettera(i)));
-          //pnlSx.add(new JLabel(this.generaLettera(i)));
           for (int j=0;j<lunghezzaFila;j++) {
             try {
               if (((String[]) listaPoltrone.getIndex((i*lunghezzaFila)+j))[2].equals("TRUE")) {
@@ -135,41 +134,27 @@ public class visualizzaPosti extends HttpServlet {
               }
               else
                 stato=false;
-              Posto o=new Posto(Integer.parseInt(((String[]) listaPoltrone.getIndex((i*lunghezzaFila)+j))[0]), stato, Integer.parseInt(((String[]) listaPoltrone.getIndex((i*lunghezzaFila)+j))[1]), IDProiezione);
-              result.add(o);
+              if(not_first){
+                xmlElement=",\n";
+              }else {
+                    xmlElement="";
+              }
+              not_first=true;
+              xmlElement=xmlElement+"\t{\"posto\":\n\t\t{\n\t\t\"id\":\""+Integer.parseInt(((String[]) listaPoltrone.getIndex((i*lunghezzaFila)+j))[0])+"\",\n\t\t" +
+                      "\"occupato\":\""+stato+"\",\n\t\t" +
+                      "\"fila\":\""+Integer.parseInt(((String[]) listaPoltrone.getIndex((i*lunghezzaFila)+j))[1])+"\",\n\t\t" +
+                      "\"proiezione\":\""+IDProiezione+"\"\n\t\t}\n\t}";
+              xmlResponse=xmlResponse+xmlElement;
             }
             catch (Exception e) {
               throw new ServletException("Error Constructiong \"Posto\" Object", e);
             }
           }
         }
-        String locandinaPath=request.getParameter("locandina"+IDProiezione);
-        if (locandinaPath==null || locandinaPath.equals("")) {
-            locandinaPath=(String)request.getAttribute("locandina"+IDProiezione);
-            if (locandinaPath==null || locandinaPath.equals("")) {
-                //throw new ServletException("Locandina non pervenuta");
-                locandinaPath=getServletContext().getInitParameter("defaultImage");
-            }
-            else {
-                if (!(new java.io.File(locandinaPath).exists())) {
-                    locandinaPath=getServletContext().getInitParameter("defaultImage");
-                }
-            }
-            //IDProiezione.replaceAll("\r\n", "");
-        }
-        else {
-            locandinaPath=locandinaPath.substring(locandinaPath.lastIndexOf("\\")+1, locandinaPath.length());
-            ServletContext context = getServletContext();
-            String realContextPath = context.getRealPath(request.getContextPath());
-            if (!(new java.io.File(realContextPath+"\\..\\img\\"+locandinaPath).exists())) {
-                locandinaPath=getServletContext().getInitParameter("defaultImage");
-            }
-        }
-        locandinaPath=locandinaPath.trim();
-        request.setAttribute("locandina"+IDProiezione, locandinaPath);
-        request.setAttribute("posti", result);
-        this.forward("visualizzaPosti.jsp", request, response);
-    } 
+        xmlResponse=xmlResponse+"\n\t]\n}";
+        out.print(xmlResponse);
+        out.close();
+    }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /** 
@@ -207,13 +192,4 @@ public class visualizzaPosti extends HttpServlet {
         return "Short description";
     }// </editor-fold>
 
-    private void redirect(String aDestinationPage, HttpServletResponse aResponse) throws IOException {
-        String urlWithSessionID = aResponse.encodeRedirectURL(aDestinationPage);
-        aResponse.sendRedirect( urlWithSessionID );
-    }
-
-    private void forward(String aResponsePage, HttpServletRequest aRequest, HttpServletResponse aResponse) throws ServletException, IOException {
-        RequestDispatcher dispatcher = aRequest.getRequestDispatcher(aResponsePage);
-        dispatcher.forward(aRequest, aResponse);
-    }
 }

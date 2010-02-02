@@ -6,25 +6,29 @@
             <name>SimplyTicketWebClient</name>
             <minimum-ant-version>1.6.5</minimum-ant-version>
             <web-module-libraries>
-                <library>
+                <library dirs="200">
                     <file>${reference.SimplyTicketServer.jar}</file>
                     <path-in-war>WEB-INF/lib</path-in-war>
                 </library>
-                <library>
+                <library dirs="200">
                     <file>${file.reference.rmi_stub.jar}</file>
+                    <path-in-war>WEB-INF/lib</path-in-war>
+                </library>
+                <library dirs="200">
+                    <file>${file.reference.dwr.jar}</file>
                     <path-in-war>WEB-INF/lib</path-in-war>
                 </library>
             </web-module-libraries>
             <web-module-additional-libraries>
-                <library>
+                <library dirs="200">
                     <file>${file.reference.ControllerBiglietteriaImpl_Stub.class}</file>
                     <path-in-war>/</path-in-war>
                 </library>
-                <library>
+                <library dirs="200">
                     <file>${file.reference.ControllerLoginImpl_Stub.class}</file>
                     <path-in-war>/</path-in-war>
                 </library>
-                <library>
+                <library dirs="200">
                     <file>${file.reference.ControllerUtenzaImpl_Stub.class}</file>
                     <path-in-war>/</path-in-war>
                 </library>

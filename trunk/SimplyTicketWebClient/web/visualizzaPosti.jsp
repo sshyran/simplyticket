@@ -10,10 +10,12 @@
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 	<title>Simply Ticket - Prenota/Rimborsa Posti</title>
 	<link href="simply.css" rel="stylesheet" type="text/css" />
+        <script type="text/javascript" src="AJS/AJS.js"></script>
+        <script type="text/javascript" src="AJS/AJS_fx.js"></script>
         <script language="JavaScript" type="text/JavaScript" src="simplyTicket.js"></script>
     </head>
 
-	<body class="oneColLiqCtrHdr">
+    <body class="oneColLiqCtrHdr" onload="start_fetching_places()">
 		<div id="container">
 		  <div id="header">
 		    <h1>Prenota/Rimborsa Posti</h1>
@@ -96,7 +98,7 @@
           	<p>
                     <input type="submit" value="Prenota" name="prenota" onclick=" return check(1);"/>
                         <input type="submit" value="Rimborsa" name="prenota" onclick="return check(2);"/>
-                        <input type="hidden" value="<%out.println(idProiezione);%>" name="idProiezione"></input>
+                        <input type="hidden" value="<%out.println(idProiezione);%>" name="idProiezione" id="idProiezione"></input>
                         <a href="proiezioneServlet"><input type="button" value="<< Indietro"/></a>
                         <%
                         if (arrayList!=null && arrayList.size()>0) {

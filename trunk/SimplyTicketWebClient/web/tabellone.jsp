@@ -8,9 +8,12 @@
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 	<title>Simply Ticket - Tabellone</title>
 	<link href="simply.css" rel="stylesheet" type="text/css" />
+        <script type="text/javascript" src="AJS/AJS.js"></script>
+        <script type="text/javascript" src="AJS/AJS_fx.js"></script>
+        <script type="text/javascript" src="simplyTicket.js"></script>
 	</head>
 
-	<body class="oneColLiqCtrHdr">
+        <body class="oneColLiqCtrHdr" onload="start_fetching()">
 		<div id="container">
 		  <div id="header">
 		    <h1>Proiezioni Attuali</h1>

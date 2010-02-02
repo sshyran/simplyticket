@@ -8,13 +8,17 @@
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 	<title>Simply Ticket - Gestione Biglietteria</title>
 	<link href="simply.css" rel="stylesheet" type="text/css" />
+        <script type="text/javascript" src="AJS/AJS.js"></script>
+        <script type="text/javascript" src="AJS/AJS_fx.js"></script>
+        <script type="text/javascript" src="simplyTicket.js"></script>
 	</head>
 
-	<body class="oneColLiqCtrHdr">
+        <body class="oneColLiqCtrHdr" onload="start_fetching_biglietteria()">
 		<div id="container">
 		  <div id="header">
 		    <h1>Gestione Biglietteria</h1>
 		  <!-- end #header --></div>
+                  <form name="visualizzaPosti" action="visualizzaPosti">
 		  <div id="mainContent">
                    <%
             HttpSession mySession=request.getSession();
@@ -32,7 +36,7 @@
                     ProiezioneGiornaliera element = (ProiezioneGiornaliera) iter.next();
                     out.println("<input type=\"hidden\" name=\"locandina"+element.getId()+"\" value=\""+element.getLocandina()+"\" />");
                     out.println("<tr>");
-                    out.println("<td><input type=\"radio\" name=\"film\" value=\""+element.getId()+"\" /></td>");
+                    out.println("<td><input type=\"radio\" id=\"film\" name=\"film\" value=\""+element.getId()+"\" /></td>");
                     out.println("<td>"+element.getSala()+"</td>");
                     out.println("<td>"+element.getTitolo()+"</td>");
                     out.println("<td>"+element.getDisponibilita()+"</td>");
@@ -53,12 +57,13 @@
               <a href="index.jsp"><input type="button" value="<< Indietro"/></a>
             <% if (arrayList!=null && arrayList.size()>0) {
                 out.println("<input type=\"submit\" value=\"Invio\" name=\"invio\" />");
-                out.println("</form>");
+                //out.println("</form>");
                 }else{
                 out.println("<input type=\"submit\" value=\"Invio\" name=\"invio\" disabled/>");
                         }%>
             </p>
 		  <!-- end #footer --></div>
+            </form>
                 
 		<!-- end #container --></div>
 	</body>

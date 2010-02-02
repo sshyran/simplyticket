@@ -1,0 +1,27 @@
+/* 
+ * To change this template, choose Tools | Templates
+ * and open the template in the editor.
+ */
+
+{"lista":
+        [
+        {"proiezione":
+                {
+                "id":"00002",
+                "sala":"P1",
+                "titolo":"tra le nuvole",
+                "disponibilita":"98",
+                "inizio":"22:00",
+                }
+        },
+       {"proiezione":
+                {
+                "id":"00002",
+                "sala":"P1",
+                "titolo":"tra le nuvole",
+                "disponibilita":"98",
+                "inizio":"22:00",
+                }
+        },
+        ]
+}

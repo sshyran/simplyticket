@@ -538,6 +538,7 @@ exists or setup the property manually. For example like this:
         <copyfiles files="${reference.SimplyTicketServer.jar}" iftldtodir="${build.web.dir}/WEB-INF" todir="${dist.ear.dir}/lib"/>
         <copyfiles files="${file.reference.rmi_stub.jar}" iftldtodir="${build.web.dir}/WEB-INF" todir="${dist.ear.dir}/lib"/>
         <copyfiles files="${file.reference.dwr.jar}" iftldtodir="${build.web.dir}/WEB-INF" todir="${dist.ear.dir}/lib"/>
+        <copyfiles files="${file.reference.json_simple-1.1.jar}" iftldtodir="${build.web.dir}/WEB-INF" todir="${dist.ear.dir}/lib"/>
         <copyfiles files="${file.reference.ControllerBiglietteriaImpl_Stub.class}" todir="${build.web.dir}//"/>
         <copyfiles files="${file.reference.ControllerLoginImpl_Stub.class}" todir="${build.web.dir}//"/>
         <copyfiles files="${file.reference.ControllerUtenzaImpl_Stub.class}" todir="${build.web.dir}//"/>
@@ -548,6 +549,7 @@ exists or setup the property manually. For example like this:
         <copyfiles files="${reference.SimplyTicketServer.jar}" todir="${build.web.dir}/WEB-INF/lib"/>
         <copyfiles files="${file.reference.rmi_stub.jar}" todir="${build.web.dir}/WEB-INF/lib"/>
         <copyfiles files="${file.reference.dwr.jar}" todir="${build.web.dir}/WEB-INF/lib"/>
+        <copyfiles files="${file.reference.json_simple-1.1.jar}" todir="${build.web.dir}/WEB-INF/lib"/>
         <copyfiles files="${file.reference.ControllerBiglietteriaImpl_Stub.class}" todir="${build.web.dir}//"/>
         <copyfiles files="${file.reference.ControllerLoginImpl_Stub.class}" todir="${build.web.dir}//"/>
         <copyfiles files="${file.reference.ControllerUtenzaImpl_Stub.class}" todir="${build.web.dir}//"/>

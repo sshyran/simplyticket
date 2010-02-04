@@ -56,6 +56,10 @@
         <servlet-name>AjaxServletVisualizzaPosti</servlet-name>
         <servlet-class>AjaxServletVisualizzaPosti</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>prenotaPosti2</servlet-name>
+        <servlet-class>prenotaPosti</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>loginServlet</servlet-name>
         <url-pattern>/loginServlet</url-pattern>
@@ -91,6 +95,10 @@
     <servlet-mapping>
         <servlet-name>AjaxServletVisualizzaPosti</servlet-name>
         <url-pattern>/AjaxServletVisualizzaPosti</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>prenotaPosti2</servlet-name>
+        <url-pattern>/prenotaPosti2</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

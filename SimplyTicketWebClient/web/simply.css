@@ -99,3 +99,6 @@ td > span {
 .true{
     background: url(img/poltrona_red.png) bottom no-repeat;
 }
+.reserved{
+    background: url(img/poltrona_orange.png) bottom no-repeat;
+}

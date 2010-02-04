@@ -1,7 +1,9 @@
-/* 
+/*
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
+
+var timerID;
 
 function check(param) {
 
@@ -32,8 +34,19 @@ function asd() {
     return true;
 }
 
+function echo(id) {
+    var div=document.getElementById(id);
+    if (div.getAttribute("class")!="reserved") {
+        div.setAttribute("title", div.getAttribute("class"));
+        div.setAttribute("class", "reserved");
+    }
+    else {
+        div.setAttribute("class", div.getAttribute("title"));
+    }
+}
+
 function getCheckedValue(radioObj) {
-	if(!radioObj)
+        if(!radioObj)
 		return "";
 	var radioLength = radioObj.length;
 	if(radioLength == undefined)
@@ -55,7 +68,7 @@ function start_fetching() {
 }
 
 function ajax_fetch_film() {
-    var url = "http://localhost:8080/SimplyTicketWebClient/AjaxServlet";
+    var url = "/SimplyTicketWebClient/AjaxServlet";
     var d = AJS.getRequest(url,null,"get");
     d.addCallbacks(
      function(res_txt, req) {
@@ -83,7 +96,7 @@ function start_fetching_biglietteria() {
 }
 
 function ajax_fetch_film_biglietteria() {
-    var url = "http://localhost:8080/SimplyTicketWebClient/AjaxServletBiglietteria";
+    var url = "/SimplyTicketWebClient/AjaxServletBiglietteria";
     var d = AJS.getRequest(url,null,"get");
     d.addCallbacks(
      function(res_txt, req) {
@@ -113,41 +126,83 @@ function ajax_fetch_film_biglietteria() {
 }
 
 function start_fetching_places() {
-    setInterval(ajax_fetch_places, 2000);
+    timerID=setInterval(ajax_fetch_places, 2000);
 }
 
 function ajax_fetch_places() {
     var idProiezione = document.prenotaPosti.idProiezione.value;
-    var url = "http://localhost:8080/SimplyTicketWebClient/AjaxServletVisualizzaPosti?film="+idProiezione;
+    var url = "/SimplyTicketWebClient/AjaxServletVisualizzaPosti?film="+idProiezione;
     var d = AJS.getRequest(url);
     d.addCallbacks(
      function(res_txt, req) {
          var res=AJS.evalTxt("("+res_txt+")");
-         var table = AJS.$("platea");
-         var table_p = AJS.$("mainContent_mod");
-         var table_new="<table id=\"platea\" align=\"center\">\n\t<tr><td>1</td>";
-         var num_fila=1;
+         var table_p = AJS.$("platea");
          for each (f in res.lista) {
-             if (num_fila==f.posto.fila) {
-                 table_new+="<td><div id=\""+f.posto.fila+"_"+f.posto.id+"\" class="+f.posto.occupato+">"+f.posto.id+"</div></td>"
-                 if (f.posto.id==10){
-                     table_new+="<td style=\"background-color: orange; \">&nbsp&nbsp</td>";
-                 }
+             var div=document.getElementById(f.posto.fila+"_"+f.posto.id);
+             if (div.getAttribute("class")!="reserved") {
+                 div.setAttribute("class", f.posto.occupato);
+                 div.focus();
              }
              else {
-                 num_fila=f.posto.fila;
-                 table_new+="</tr>\n<tr><td>"+num_fila+"</td><td><div id=\""+f.posto.fila+"_"+f.posto.id+"\" class="+f.posto.occupato+">"+f.posto.id+"</div></td>"
+                 if (div.getAttribute("title")=="true" && f.posto.occupato=="false") {
+                     alert("Il posto è stato reso di nuovo disponibile da un altro operatore.");
+                     div.setAttribute("class", f.posto.occupato);
+                     div.setAttribute("title", f.posto.occupato);
+                 }
+                 if (div.getAttribute("title")=="false" && f.posto.occupato=="true") {
+                     alert("Il posto è stato venduto da un altro operatore.");
+                     div.setAttribute("class", f.posto.occupato);
+                     div.setAttribute("title", f.posto.occupato);
+                 }
              }
          }
          table_new+="</tr></table>";
-         AJS.removeElement(table);
-//         alert(table_new);
+         AJS.removeElement();
          AJS.setHTML(table_p,table_new);
      },
      function(res_txt, req) {
-         //alert("Error encountered on fetching new data");
+         alert("Error encountered on fetching new data");
      }
     )
     d.sendReq();
+    return true;
+}
+
+function submit_places() {
+    clearInterval(timerID);
+    var table_p = AJS.$("platea");
+    var divs=AJS.getElementsByTagAndClassName("div", "reserved", table_p,null);
+    var proiezione = document.prenotaPosti.idProiezione.value;
+    var param="{\"lista\":\n\t";
+    var param_buy="{\"prenota\":\n\t\t[\n";
+    var param_refuse="\"rimborsa\":\n\t\t[\n";
+    var not_first_buy=false;
+    var not_first_refuse=false;
+    var temp;
+    for each (f in divs) {
+        if (f.getAttribute("title")=="false") {
+            //add to something
+            if (not_first_buy) {
+                param_buy+=",";
+            }
+            temp=f.getAttribute("id");
+            param_buy+="\t\t{\"posto\":\n\t\t{\n\t\t\t\"proiezione\":\""+proiezione+"\",\n\t\t\t\"id\":\""+temp.substring(temp.indexOf('_')+1)+"\",\n\t\t\t\"fila\":\""+temp.substring(0,temp.indexOf('_'))+"\"\n\t\t\t}\n\t\t}";
+            not_first_buy=true;
+        }
+        else {
+            //add to something
+            if (not_first_refuse) {
+                param_refuse+=",";
+            }
+            temp=f.getAttribute("id");
+            param_refuse+="\t\t{\"posto\":\n\t\t{\n\t\t\t\"proiezione\":\""+proiezione+"\",\n\t\t\t\"id\":\""+temp.substring(temp.indexOf('_')+1)+"\",\n\t\t\t\"fila\":\""+temp.substring(0,temp.indexOf('_'))+"\"\n\t\t\t}\n\t\t}";
+            not_first_refuse=true;
+        }
+    }
+    param_buy+="],";
+    param_refuse+="]";
+    param+=param_buy+param_refuse+"\n\t}\n}";
+    var dati=document.prenotaPosti.dati;
+    dati.value=param;
     return true;
 }

@@ -12,7 +12,7 @@
 	<link href="simply.css" rel="stylesheet" type="text/css" />
         <script type="text/javascript" src="AJS/AJS.js"></script>
         <script type="text/javascript" src="AJS/AJS_fx.js"></script>
-        <script language="JavaScript" type="text/JavaScript" src="simplyTicket.js"></script>
+        <script type="text/javascript" src="simplyTicket.js"></script>
     </head>
 
     <body class="oneColLiqCtrHdr" onload="start_fetching_places()">
@@ -37,34 +37,14 @@
 
                     <div id="barrasx">
                         <div id="locandina">
-                            <a href=""> <img src="img/<%= request.getAttribute("locandina"+idProiezione) %>" alt="Locandina del film" ></img></a><br /><br /><!-- getLocandina from Film -->
+                            <a href="img/<%= request.getAttribute("locandina"+idProiezione) %>" target="_blank"> <img src="img/<%= request.getAttribute("locandina"+idProiezione) %>" alt="Locandina del film" ></img></a><br /><br /><!-- getLocandina from Film -->
                         </div>
                     <%
                     out.print("<input type=\"hidden\" name=\"locandina"+idProiezione+"\" value=\""+request.getAttribute("locandina"+idProiezione)+"\" />");
+                    out.print("<input type=\"hidden\" id=\"dati\" name=\"dati\"value=\"\" />");
                     out.println("<table id=\"acquisto\"><tr><td>Intero:</td><td><input type=\"text\" name=\"txtCostoIntero\" value=\"5.0\" size=\"4\"/></td><td><input type=\"radio\" name=\"tipo_biglietto\" value=\"intero\" checked /></td></tr>");
                     out.println("<tr><td>Ridotto:</td><td><input type=\"text\" name=\"txtCostoRidotto\" value=\"3.5\" size=\"4\"/></td><td><input type=\"radio\" name=\"tipo_biglietto\" value=\"ridotto\" /></td></tr>");
-                    out.println("<tr><td>Fila:</td><td></td><td><select name=\"sceltaFila\">)");
-                    
-
-                    int id_fila = 1;
-                    for (Iterator iter = arrayList.iterator(); iter.hasNext();) {
-			Posto element = (Posto) iter.next();
-                        while(id_fila==element.getIDFila()){
-                            out.println("<option value=\""+id_fila+"\">"+id_fila);
-                            id_fila++;
-                        }
-                    }
-                    out.println("</select></td></tr>");
-                    out.println("<tr><td>Posto:</td><td></td><td><select name=\"sceltaPosto\">");
-                    int id_posto = 1;
-                    for (Iterator iter = arrayList.iterator(); iter.hasNext();) {
-			Posto element = (Posto) iter.next();
-                        while(id_posto==element.getID()){
-                            out.println("<option value=\""+id_posto+"\">"+id_posto);
-                            id_posto++;
-                        }
-                    }
-                    out.println("</select></td></tr></table>");
+                    out.println("</table>");
                     %>
                     </div>
                     <div id="mainContent_mod">
@@ -75,7 +55,7 @@
 					for (Iterator iter = arrayList.iterator(); iter.hasNext();) {
 						Posto element = (Posto) iter.next();
                                                 if (num_fila == element.getIDFila()) {
-                                                    out.println("<td><div id=\""+element.getIDFila()+"_"+element.getID()+"\" class="+element.getOccupato()+">"+element.getID()+"</div></td>");
+                                                    out.println("<td><div id=\""+element.getIDFila()+"_"+element.getID()+"\" class="+element.getOccupato()+" title=\""+element.getOccupato()+"\" ondblclick='echo(\""+element.getIDFila()+"_"+element.getID()+"\")'>"+element.getID()+"</div></td>");
                                                     if (element.getID()==10){
                                                         out.println("<td style=\"background-color: orange; \">&nbsp&nbsp</td>");
                                                     }
@@ -96,8 +76,7 @@
 			<!-- end #mainContent --></div>
 		  <div id="footer">
           	<p>
-                    <input type="submit" value="Prenota" name="prenota" onclick=" return check(1);"/>
-                        <input type="submit" value="Rimborsa" name="prenota" onclick="return check(2);"/>
+                        <input type="submit" value="Invia" name="prenota" onclick="return submit_places();"/>
                         <input type="hidden" value="<%out.println(idProiezione);%>" name="idProiezione" id="idProiezione"></input>
                         <a href="proiezioneServlet"><input type="button" value="<< Indietro"/></a>
                         <%

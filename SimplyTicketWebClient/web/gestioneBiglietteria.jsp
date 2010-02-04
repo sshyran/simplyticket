@@ -59,7 +59,7 @@
                 out.println("<input type=\"submit\" value=\"Invio\" name=\"invio\" />");
                 //out.println("</form>");
                 }else{
-                out.println("<input type=\"submit\" value=\"Invio\" name=\"invio\" disabled/>");
+                out.println("<input type=\"submit\" value=\"Invio\" name=\"invio\"/>");
                         }%>
             </p>
 		  <!-- end #footer --></div>

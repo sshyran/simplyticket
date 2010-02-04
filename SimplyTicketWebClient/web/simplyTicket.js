@@ -29,6 +29,7 @@ function check(param) {
         }
     }
 }
+
 function asd() {
     alert("Ciao");
     return true;
@@ -170,6 +171,7 @@ function ajax_fetch_places() {
 
 function submit_places() {
     clearInterval(timerID);
+    var no_places=true;
     var table_p = AJS.$("platea");
     var divs=AJS.getElementsByTagAndClassName("div", "reserved", table_p,null);
     var proiezione = document.prenotaPosti.idProiezione.value;
@@ -185,6 +187,7 @@ function submit_places() {
             if (not_first_buy) {
                 param_buy+=",";
             }
+            no_places=false;
             temp=f.getAttribute("id");
             param_buy+="\t\t{\"posto\":\n\t\t{\n\t\t\t\"proiezione\":\""+proiezione+"\",\n\t\t\t\"id\":\""+temp.substring(temp.indexOf('_')+1)+"\",\n\t\t\t\"fila\":\""+temp.substring(0,temp.indexOf('_'))+"\"\n\t\t\t}\n\t\t}";
             not_first_buy=true;
@@ -194,6 +197,7 @@ function submit_places() {
             if (not_first_refuse) {
                 param_refuse+=",";
             }
+            no_places=false;
             temp=f.getAttribute("id");
             param_refuse+="\t\t{\"posto\":\n\t\t{\n\t\t\t\"proiezione\":\""+proiezione+"\",\n\t\t\t\"id\":\""+temp.substring(temp.indexOf('_')+1)+"\",\n\t\t\t\"fila\":\""+temp.substring(0,temp.indexOf('_'))+"\"\n\t\t\t}\n\t\t}";
             not_first_refuse=true;
@@ -204,5 +208,19 @@ function submit_places() {
     param+=param_buy+param_refuse+"\n\t}\n}";
     var dati=document.prenotaPosti.dati;
     dati.value=param;
+    var intero=document.forms['prenotaPosti'].txtCostoIntero.value;
+    var ridotto=document.forms['prenotaPosti'].txtCostoRidotto.value;
+    if (!intero.match(/^[1-9]\d*(\.\d{1,2})?$/)) {
+        alert("Costo biglietto intero non valido");
+        return false;
+    }
+    if (!ridotto.match(/^[1-9]\d*(\.\d{1,2})?$/)) {
+        alert("Costo biglietto ridotto non valido");
+        return false;
+    }
+    if (no_places){
+        alert("Non hai selezionato alcun posto.");
+        return false;
+    }
     return true;
 }

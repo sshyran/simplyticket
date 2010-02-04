@@ -26,7 +26,6 @@
                             <tr><td><span>uri </span></td><td> ${pageContext.errorData.requestURI} </td></tr>
                             <tr><td><span>status code </span></td><td> ${pageContext.errorData.statusCode} </td></tr>
                             <tr><td><span>exception </span></td><td> ${pageContext.errorData.throwable.message} </td></tr>
-                            <tr><td><span>caused by </span></td><td> ${pageContext.errorData.throwable.cause.message} in ${pageContext.errorData.throwable.cause.class} </td></tr>
                         </table>
                         <!-- end #mainContent --></div>
 		  <div id="footer">

@@ -31,7 +31,7 @@
 				if (arrayList!=null && arrayList.size()>0) {
                                     Posto element2 = (Posto) (arrayList.get(0));
                                     idProiezione = element2.getIDProiezione();
-                                    out.println("<form name=\"prenotaPosti\" action=\"prenotaPosti\">");
+                                    out.println("<form name=\"prenotaPosti\" action=\"prenotaPosti\" method=\"post\">");
                     %>
 
 
@@ -61,7 +61,7 @@
                                                     }
                                                 }else{
                                                     num_fila = element.getIDFila();
-                                                    out.println("</tr>\n<tr><td>"+num_fila+"</td><td><div class="+element.getOccupato()+">"+element.getID()+"</div></td>");
+                                                    out.println("</tr>\n<tr><td>"+num_fila+"</td><td><div id=\""+element.getIDFila()+"_"+element.getID()+"\" class="+element.getOccupato()+" title=\""+element.getOccupato()+"\" ondblclick='echo(\""+element.getIDFila()+"_"+element.getID()+"\")'>"+element.getID()+"</div></td>");
                                                 }						
 					}
 					

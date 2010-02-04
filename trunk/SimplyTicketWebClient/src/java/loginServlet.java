@@ -72,8 +72,20 @@ public class loginServlet extends HttpServlet {
         }
         String user=request.getParameter("username");
         String pass=request.getParameter("password");
-        if ((user==null || pass==null)||(user.equals("") || pass.equals(""))) {
+        if ((user==null || pass==null)) {
             throw new ServletException("Parametri non corretti");
+        }
+        if (user.length()<6 || user.length()>10) {
+            throw new ServletException("Il Nome Utente inserito non è corretto. La sua lunghezza deve essere compresa tra 6 e 10 caratteri");
+        }
+        if (!user.matches("\\w{6,10}")) {
+            throw new ServletException("Il Nome Utente inserito non è corretto.Sono ammessi solamente caratteri alfanumerici");
+        }
+        if (pass.length()<6 || pass.length()>10) {
+            throw new ServletException("La Password inserita non è corretta. La sua lunghezza deve essere compresa tra 6 e 10 caratteri");
+        }
+        if (!pass.matches("\\w{6,10}")) {
+            throw new ServletException("La password inserita non è corretta.Sono ammessi solamente caratteri alfanumerici");
         }
         int id=-1;
         try {
@@ -89,7 +101,7 @@ public class loginServlet extends HttpServlet {
 
         }
         else {
-            throw new ServletException("Login failed");
+            throw new ServletException("Username/Password non esistenti");
         }
     } 
 

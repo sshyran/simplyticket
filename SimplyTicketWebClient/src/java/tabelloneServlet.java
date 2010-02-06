@@ -38,6 +38,11 @@ public class tabelloneServlet extends HttpServlet {
     private ControllerUtenza controllerUtenza;
     private String rmi_host;
 
+    /**
+     * Questo metodo serve per prelevare alcuni parametri che serviranno durante tutta la vita della servler
+     * @param config Oggetto di tipo ServletConfig, server per recuperare informazioni sulla configurazione del container
+     * @throws ServletException
+     */
     @Override
     public void init(ServletConfig config) throws ServletException {
         super.init(config);
@@ -47,6 +52,9 @@ public class tabelloneServlet extends HttpServlet {
         this.initialize();
     }
 
+    /**
+     * Questo metodo serve per inizializzare gli oggetti remoti
+     */
     private void initialize() {
         try {
             controllerUtenza = (ControllerUtenza) Naming.lookup("//"+rmi_host+"/controllerUtenza");
@@ -59,12 +67,12 @@ public class tabelloneServlet extends HttpServlet {
         }
     }
     
-    /** 
-     * Processes requests for both HTTP <code>GET</code> and <code>POST</code> methods.
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
+    /**
+     * Questo metodo risponde alle richieste GET/POST ed effettua la lettura delle proiezione del giorno e le prepara per la jsp relativa
+     * @param request Richiesta alla servlet
+     * @param response Risposta della servlet
+     * @throws ServletException Se un eccezione viene sollevata
+     * @throws IOException Se si verifica un errore di I/O
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException {
@@ -183,12 +191,12 @@ public class tabelloneServlet extends HttpServlet {
     } 
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
-    /** 
-     * Handles the HTTP <code>GET</code> method.
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
+    /**
+     * Gestisce uan richiesta HTTP con metodo GET
+     * @param oggetto request della servlet
+     * @param oggetto response della servlet
+     * @throws ServletException Se si verifica un errore nel container
+     * @throws IOException se accade un errore di I/O
      */
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
@@ -196,12 +204,12 @@ public class tabelloneServlet extends HttpServlet {
         processRequest(request, response);
     } 
 
-    /** 
-     * Handles the HTTP <code>POST</code> method.
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
+    /**
+     * Gestisce uan richiesta HTTP con metodo POST
+     * @param oggetto request della servlet
+     * @param oggetto response della servlet
+     * @throws ServletException Se si verifica un errore nel container
+     * @throws IOException se accade un errore di I/O
      */
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
@@ -209,20 +217,34 @@ public class tabelloneServlet extends HttpServlet {
         processRequest(request, response);
     }
 
-    /** 
-     * Returns a short description of the servlet.
-     * @return a String containing servlet description
+    /**
+     * Restituisce una breve descrizione della servlet
+     * @return Una stringa contenente una piccola descrizione della servlet
      */
     @Override
     public String getServletInfo() {
         return "Short description";
     }// </editor-fold>
 
+    /**
+     * Effettua il redirect ad una nuova risorsa sul server
+     * @param aDestinationPage l'url della risorsa verso la quale deve essere fatto il redirect
+     * @param aResponse L'oggetto response della servlet
+     * @throws IOException Eccezione sollevata in caso di errori di I/O
+     */
     private void redirect(String aDestinationPage, HttpServletResponse aResponse) throws IOException {
         String urlWithSessionID = aResponse.encodeRedirectURL(aDestinationPage);
         aResponse.sendRedirect( urlWithSessionID );
     }
 
+    /**
+     * Effettua il forward ad una nuova risorsa sul server
+     * @param aResponsePage l'url della risorsa verso la quale deve essere fatto il forward
+     * @param aRequest L'oggetto request della servlet
+     * @param aResponse L'oggetto response della servlet
+     * @throws ServletException
+     * @throws IOException Eccezione sollevata in caso di errori di I/O
+     */
     private void forward(String aResponsePage, HttpServletRequest aRequest, HttpServletResponse aResponse) throws ServletException, IOException {
         RequestDispatcher dispatcher = aRequest.getRequestDispatcher(aResponsePage);
         dispatcher.forward(aRequest, aResponse);

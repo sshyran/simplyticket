@@ -33,6 +33,11 @@ public class AjaxServletBiglietteria extends HttpServlet {
     private ControllerBiglietteria controllerBiglietteria;
     private String rmi_host;
 
+    /**
+     * Questo metodo serve per prelevare alcuni parametri che serviranno durante tutta la vita della servler
+     * @param config Oggetto di tipo ServletConfig, server per recuperare informazioni sulla configurazione del container
+     * @throws ServletException
+     */
     @Override
     public void init(ServletConfig config) throws ServletException {
         super.init(config);
@@ -41,6 +46,9 @@ public class AjaxServletBiglietteria extends HttpServlet {
         this.initialize();
     }
 
+    /**
+     * Questo metodo serve per inizializzare gli oggetti remoti
+     */
     private void initialize() {
         try {
             controllerBiglietteria = (ControllerBiglietteria) Naming.lookup("//"+rmi_host+"/controllerBiglietteria");
@@ -55,11 +63,11 @@ public class AjaxServletBiglietteria extends HttpServlet {
 
 
     /**
-     * Processes requests for both HTTP <code>GET</code> and <code>POST</code> methods.
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
+     * Questo metodo risponde a XHR ed effettua la lettura delle proiezione del giorno e le restituisce in formato JSON
+     * @param request Richiesta alla servlet
+     * @param response Risposta della servlet
+     * @throws ServletException Se un eccezione viene sollevata
+     * @throws IOException Se si verifica un errore di I/O
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException {
@@ -122,25 +130,25 @@ public class AjaxServletBiglietteria extends HttpServlet {
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
-    /** 
-     * Handles the HTTP <code>GET</code> method.
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
+    /**
+     * Gestisce uan richiesta HTTP con metodo GET
+     * @param oggetto request della servlet
+     * @param oggetto response della servlet
+     * @throws ServletException Se si verifica un errore nel container
+     * @throws IOException se accade un errore di I/O
      */
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException {
         processRequest(request, response);
-    } 
+    }
 
-    /** 
-     * Handles the HTTP <code>POST</code> method.
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
+    /**
+     * Gestisce uan richiesta HTTP con metodo POST
+     * @param oggetto request della servlet
+     * @param oggetto response della servlet
+     * @throws ServletException Se si verifica un errore nel container
+     * @throws IOException se accade un errore di I/O
      */
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
@@ -148,9 +156,9 @@ public class AjaxServletBiglietteria extends HttpServlet {
         processRequest(request, response);
     }
 
-    /** 
-     * Returns a short description of the servlet.
-     * @return a String containing servlet description
+    /**
+     * Restituisce una breve descrizione della servlet
+     * @return Una stringa contenente una piccola descrizione della servlet
      */
     @Override
     public String getServletInfo() {

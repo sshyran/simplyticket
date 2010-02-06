@@ -5,7 +5,6 @@
 
 
 import data_layer.Collezione;
-import data_layer.Posto;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.net.MalformedURLException;
@@ -16,13 +15,11 @@ import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.servlet.ServletConfig;
-import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import web.Poltrona;
 
 /**
  *
@@ -36,6 +33,11 @@ public class AjaxServletVisualizzaPosti extends HttpServlet {
     private int lunghezzaFila;
     private int numeroFile;
 
+    /**
+     * Questo metodo serve per prelevare alcuni parametri che serviranno durante tutta la vita della servler
+     * @param config Oggetto di tipo ServletConfig, server per recuperare informazioni sulla configurazione del container
+     * @throws ServletException
+     */
     @Override
     public void init(ServletConfig config) throws ServletException {
         super.init(config);
@@ -44,6 +46,9 @@ public class AjaxServletVisualizzaPosti extends HttpServlet {
         this.initialize();
     }
 
+    /**
+     * Questo metodo serve per inizializzare gli oggetti remoti
+     */
     private void initialize() {
         try {
             controllerBiglietteria = (ControllerBiglietteria) Naming.lookup("//"+rmi_host+"/controllerBiglietteria");
@@ -57,11 +62,11 @@ public class AjaxServletVisualizzaPosti extends HttpServlet {
     }
 
     /**
-     * Processes requests for both HTTP <code>GET</code> and <code>POST</code> methods.
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
+     * Questo metodo risponde a XHR ed effettua la lettura dei posti per la proiezione selezionata e restituisce i dati in formato JSON
+     * @param request Richiesta alla servlet
+     * @param response Risposta della servlet
+     * @throws ServletException Se un eccezione viene sollevata
+     * @throws IOException Se si verifica un errore di I/O
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException {
@@ -122,7 +127,6 @@ public class AjaxServletVisualizzaPosti extends HttpServlet {
               finito=true;
         }
         numeroFile=listaPoltrone.size()/lunghezzaFila;
-        Poltrona oggettoPoltrona=null;
         ArrayList result=new ArrayList();
         boolean stato=false;
         for (int i=0;i<numeroFile;i++) {
@@ -157,25 +161,25 @@ public class AjaxServletVisualizzaPosti extends HttpServlet {
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
-    /** 
-     * Handles the HTTP <code>GET</code> method.
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
+    /**
+     * Gestisce uan richiesta HTTP con metodo GET
+     * @param oggetto request della servlet
+     * @param oggetto response della servlet
+     * @throws ServletException Se si verifica un errore nel container
+     * @throws IOException se accade un errore di I/O
      */
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException {
         processRequest(request, response);
-    } 
+    }
 
-    /** 
-     * Handles the HTTP <code>POST</code> method.
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
+    /**
+     * Gestisce uan richiesta HTTP con metodo POST
+     * @param oggetto request della servlet
+     * @param oggetto response della servlet
+     * @throws ServletException Se si verifica un errore nel container
+     * @throws IOException se accade un errore di I/O
      */
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
@@ -183,9 +187,9 @@ public class AjaxServletVisualizzaPosti extends HttpServlet {
         processRequest(request, response);
     }
 
-    /** 
-     * Returns a short description of the servlet.
-     * @return a String containing servlet description
+    /**
+     * Restituisce una breve descrizione della servlet
+     * @return Una stringa contenente una piccola descrizione della servlet
      */
     @Override
     public String getServletInfo() {

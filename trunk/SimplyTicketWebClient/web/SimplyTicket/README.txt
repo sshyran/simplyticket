@@ -1,1 +1,0 @@
-Put this folder under C:\

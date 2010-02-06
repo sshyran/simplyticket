@@ -42,8 +42,8 @@
                     <%
                     out.print("<input type=\"hidden\" name=\"locandina"+idProiezione+"\" value=\""+request.getAttribute("locandina"+idProiezione)+"\" />");
                     out.print("<input type=\"hidden\" id=\"dati\" name=\"dati\"value=\"\" />");
-                    out.println("<table id=\"acquisto\"><tr><td>Intero:</td><td><input type=\"text\" name=\"txtCostoIntero\" value=\"5.0\" size=\"4\"/></td><td><input type=\"radio\" name=\"tipo_biglietto\" value=\"intero\" checked /></td></tr>");
-                    out.println("<tr><td>Ridotto:</td><td><input type=\"text\" name=\"txtCostoRidotto\" value=\"3.5\" size=\"4\"/></td><td><input type=\"radio\" name=\"tipo_biglietto\" value=\"ridotto\" /></td></tr>");
+                    out.println("<table id=\"acquisto\"><tr><td>Intero:</td><td><input type=\"text\" name=\"txtCostoIntero\" value=\"5.0\" size=\"4\"/></td><td><input type=\"radio\" name=\"tipo_biglietto\" value=\"intero\" checked onclick=\"checkTheCheck()\"/></td></tr>");
+                    out.println("<tr><td>Ridotto:</td><td><input type=\"text\" name=\"txtCostoRidotto\" disabled value=\"3.5\" size=\"4\"/></td><td><input type=\"radio\" name=\"tipo_biglietto\" value=\"ridotto\" onclick=\"checkTheCheck()\"/></td></tr>");
                     out.println("</table>");
                     %>
                     </div>

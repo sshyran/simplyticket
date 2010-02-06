@@ -30,6 +30,17 @@ function check(param) {
     }
 }
 
+function checkTheCheck() {
+    if (getCheckedValue(document.forms['prenotaPosti'].tipo_biglietto)=="intero") {
+        document.forms['prenotaPosti'].txtCostoRidotto.disabled=true;
+        document.forms['prenotaPosti'].txtCostoIntero.disabled=false;
+    }
+    if (getCheckedValue(document.forms['prenotaPosti'].tipo_biglietto)=="ridotto") {
+        document.forms['prenotaPosti'].txtCostoIntero.disabled=true;
+        document.forms['prenotaPosti'].txtCostoRidotto.disabled=false;
+    }
+}
+
 function asd() {
     alert("Ciao");
     return true;
@@ -210,11 +221,11 @@ function submit_places() {
     dati.value=param;
     var intero=document.forms['prenotaPosti'].txtCostoIntero.value;
     var ridotto=document.forms['prenotaPosti'].txtCostoRidotto.value;
-    if (!intero.match(/^[1-9]\d*(\.\d{1,2})?$/)) {
+    if (!intero.match(/^[1-9]\d*(\.\d{1,2})?$/) && getCheckedValue(document.forms['prenotaPosti'].tipo_biglietto)=="intero") {
         alert("Costo biglietto intero non valido");
         return false;
     }
-    if (!ridotto.match(/^[1-9]\d*(\.\d{1,2})?$/)) {
+    if (!ridotto.match(/^[1-9]\d*(\.\d{1,2})?$/) && !ridotto.match(/^0(\.\d{1,2})?$/) && getCheckedValue(document.forms['prenotaPosti'].tipo_biglietto)=="ridotto") {
         alert("Costo biglietto ridotto non valido");
         return false;
     }

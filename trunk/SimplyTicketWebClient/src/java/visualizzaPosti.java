@@ -6,7 +6,6 @@
 
 import data_layer.Collezione;
 import data_layer.Posto;
-import web.Poltrona;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.rmi.Naming;
@@ -36,6 +35,11 @@ public class visualizzaPosti extends HttpServlet {
     private int lunghezzaFila;
     private int numeroFile;
 
+    /**
+     * Questo metodo serve per prelevare alcuni parametri che serviranno durante tutta la vita della servler
+     * @param config Oggetto di tipo ServletConfig, server per recuperare informazioni sulla configurazione del container
+     * @throws ServletException
+     */
     @Override
     public void init(ServletConfig config) throws ServletException {
         super.init(config);
@@ -46,6 +50,9 @@ public class visualizzaPosti extends HttpServlet {
         this.initialize();
     }
 
+    /**
+     * Questo metodo serve per inizializzare gli oggetti remoti
+     */
     private void initialize() {
         try {
             controllerBiglietteria = (ControllerBiglietteria) Naming.lookup("//"+rmi_host+"/controllerBiglietteria");
@@ -59,11 +66,11 @@ public class visualizzaPosti extends HttpServlet {
     }
 
     /** 
-     * Processes requests for both HTTP <code>GET</code> and <code>POST</code> methods.
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
+     * Questo metodo risponde alle richieste GET/POST ed effettua la lettura dello stato dei posti, e prepara le informazioni per essere processate dalla addetta
+     * @param request Richiesta alla servlet
+     * @param response Risposta della servlet
+     * @throws ServletException Se un eccezione viene sollevata
+     * @throws IOException Se si verifica un errore di I/O
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException {
@@ -121,12 +128,9 @@ public class visualizzaPosti extends HttpServlet {
               finito=true;
         }
         numeroFile=listaPoltrone.size()/lunghezzaFila;
-        Poltrona oggettoPoltrona=null;
         ArrayList result=new ArrayList();
         boolean stato=false;
         for (int i=0;i<numeroFile;i++) {
-          //pnlDx.add(new JLabel(this.generaLettera(i)));
-          //pnlSx.add(new JLabel(this.generaLettera(i)));
           for (int j=0;j<lunghezzaFila;j++) {
             try {
               if (((String[]) listaPoltrone.getIndex((i*lunghezzaFila)+j))[2].equals("TRUE")) {
@@ -147,7 +151,6 @@ public class visualizzaPosti extends HttpServlet {
         if (locandinaPath==null || locandinaPath.equals("")) {
             locandinaPath=(String)request.getAttribute("locandina"+IDProiezione);
             if (locandinaPath==null || locandinaPath.equals("")) {
-                //throw new ServletException("Locandina non pervenuta");
                 locandinaPath=getServletContext().getInitParameter("defaultImage");
             }
             else {
@@ -155,7 +158,6 @@ public class visualizzaPosti extends HttpServlet {
                     locandinaPath=getServletContext().getInitParameter("defaultImage");
                 }
             }
-            //IDProiezione.replaceAll("\r\n", "");
         }
         else {
             locandinaPath=locandinaPath.substring(locandinaPath.lastIndexOf("\\")+1, locandinaPath.length());
@@ -173,11 +175,11 @@ public class visualizzaPosti extends HttpServlet {
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /** 
-     * Handles the HTTP <code>GET</code> method.
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
+     * Gestisce uan richiesta HTTP con metodo GET
+     * @param oggetto request della servlet
+     * @param oggetto response della servlet
+     * @throws ServletException Se si verifica un errore nel container
+     * @throws IOException se accade un errore di I/O
      */
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
@@ -186,11 +188,11 @@ public class visualizzaPosti extends HttpServlet {
     } 
 
     /** 
-     * Handles the HTTP <code>POST</code> method.
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
+     * Gestisce uan richiesta HTTP con metodo POST
+     * @param oggetto request della servlet
+     * @param oggetto response della servlet
+     * @throws ServletException Se si verifica un errore nel container
+     * @throws IOException se accade un errore di I/O
      */
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
@@ -199,19 +201,33 @@ public class visualizzaPosti extends HttpServlet {
     }
 
     /** 
-     * Returns a short description of the servlet.
-     * @return a String containing servlet description
+     * Restituisce una breve descrizione della servlet
+     * @return Una stringa contenente una piccola descrizione della servlet
      */
     @Override
     public String getServletInfo() {
         return "Short description";
     }// </editor-fold>
 
+    /**
+     * Effettua il redirect ad una nuova risorsa sul server
+     * @param aDestinationPage l'url della risorsa verso la quale deve essere fatto il redirect
+     * @param aResponse L'oggetto response della servlet
+     * @throws IOException Eccezione sollevata in caso di errori di I/O
+     */
     private void redirect(String aDestinationPage, HttpServletResponse aResponse) throws IOException {
         String urlWithSessionID = aResponse.encodeRedirectURL(aDestinationPage);
         aResponse.sendRedirect( urlWithSessionID );
     }
 
+    /**
+     * Effettua il forward ad una nuova risorsa sul server
+     * @param aResponsePage l'url della risorsa verso la quale deve essere fatto il forward
+     * @param aRequest L'oggetto request della servlet
+     * @param aResponse L'oggetto response della servlet
+     * @throws ServletException
+     * @throws IOException Eccezione sollevata in caso di errori di I/O
+     */
     private void forward(String aResponsePage, HttpServletRequest aRequest, HttpServletResponse aResponse) throws ServletException, IOException {
         RequestDispatcher dispatcher = aRequest.getRequestDispatcher(aResponsePage);
         dispatcher.forward(aRequest, aResponse);
